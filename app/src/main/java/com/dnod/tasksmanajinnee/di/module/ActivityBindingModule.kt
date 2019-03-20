@@ -1,7 +1,7 @@
 package com.dnod.tasksmanajinnee.di.module
 
 import com.dnod.tasksmanajinnee.di.scope.ActivityScoped
-import com.dnod.tasksmanajinnee.ui.MainActivity
+import com.dnod.tasksmanajinnee.ui.main.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
