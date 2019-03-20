@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="connection_timeout_millis">3000</integer>
+    <integer name="connection_retry_attempts">3</integer>
+</resources>
