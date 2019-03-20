@@ -8,6 +8,7 @@ import com.dnod.tasksmanajinnee.R
 import com.dnod.tasksmanajinnee.databinding.ActivityMainBinding
 import com.dnod.tasksmanajinnee.ui.Conductor
 import com.dnod.tasksmanajinnee.ui.ScreenBuilderFactory
+import com.dnod.tasksmanajinnee.ui.auth.LoginFragment
 import com.dnod.tasksmanajinnee.ui.base.BaseActivity
 import com.dnod.tasksmanajinnee.ui.base.BaseFragment
 import javax.inject.Inject
@@ -28,6 +29,7 @@ class MainActivity : BaseActivity() , Conductor<Conductor.ScreenBuilder<BaseFrag
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bindingObject = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        goTo(screenBuilderFactory.create(LoginFragment.createInstance()))
     }
 
     override fun goTo(builder: Conductor.ScreenBuilder<BaseFragment>) {

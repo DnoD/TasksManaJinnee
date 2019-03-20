@@ -3,7 +3,7 @@
     package="com.dnod.tasksmanajinnee">
 
     <application
-        android:name=".ManJinneeApplication"
+        android:name=".ManaJinneeApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

@@ -1,16 +1,23 @@
 package com.dnod.tasksmanajinnee.di.module
 
 import com.dnod.tasksmanajinnee.di.scope.ActivityScoped
+import com.dnod.tasksmanajinnee.di.scope.FragmentScoped
 import com.dnod.tasksmanajinnee.ui.Conductor
 import com.dnod.tasksmanajinnee.ui.FragmentScreenBuilderFactory
 import com.dnod.tasksmanajinnee.ui.ScreenBuilderFactory
+import com.dnod.tasksmanajinnee.ui.auth.LoginFragment
 import com.dnod.tasksmanajinnee.ui.base.BaseFragment
 import com.dnod.tasksmanajinnee.ui.main.MainActivity
 import dagger.Module
 import dagger.Provides
+import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class MainActivityModule {
+
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun addLoginFragment(): LoginFragment
 
     @Module
     companion object {

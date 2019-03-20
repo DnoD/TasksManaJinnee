@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.dnod.tasksmanajinnee.ui.auth.LoginViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="@string/login_screen_title"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/email_root"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:hint="@string/login_screen_hint_email"
+            android:textColorHint="@color/text_hint_color"
+            app:hintAnimationEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:onTextChanged="@{viewModel::onUsernameChanged}"
+                android:textColor="@android:color/black" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/password_root"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:hint="@string/login_screen_hint_password"
+            android:textColorHint="@color/text_hint_color"
+            app:hintAnimationEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/email_root"
+            app:layout_goneMarginTop="16dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:onTextChanged="@{viewModel::onPasswordChanged}"
+                android:textColor="@android:color/black" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/password_confirm_root"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:hint="@string/login_screen_hint_password_confirm"
+            android:textColorHint="@color/text_hint_color"
+            android:visibility="@{viewModel.isRegistrationEnabled() ? View.VISIBLE : View.GONE}"
+            app:hintAnimationEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/password_root"
+            app:layout_goneMarginTop="16dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/password_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:onTextChanged="@{viewModel::onPasswordConfirmChanged}"
+                android:textColor="@android:color/black" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/error_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            android:gravity="center_horizontal"
+            android:text="@{viewModel.authFailureMessage}"
+            android:textAllCaps="true"
+            android:textColor="@color/login_error_color"
+            android:visibility="@{viewModel.authFailureMessage.isEmpty() ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintTop_toBottomOf="@id/password_confirm_root"
+            tools:text="@string/common_error_messages_unexpected_server_response" />
+
+        <TextView
+            android:id="@+id/auth_option_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/login_screen_label_login_register"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@id/auth_option"
+            app:layout_constraintStart_toStartOf="@id/password_root"
+            app:layout_constraintTop_toBottomOf="@id/error_message" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/auth_option"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onCheckedChanged="@{viewModel::onAuthOptionChanged}"
+            app:layout_constraintBottom_toBottomOf="@id/auth_option_label"
+            app:layout_constraintEnd_toEndOf="@id/password_root"
+            app:layout_constraintTop_toBottomOf="@id/error_message" />
+
+        <TextView
+            style="@style/AppButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            android:enabled="@{viewModel.isAuthEnabled()}"
+            android:onClick="@{() -> viewModel.auth()}"
+            android:text="@{viewModel.btnAuthText}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/auth_option"
+            tools:text="@string/login_screen_btn_login" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/progress_bg_color"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="@{viewModel.isDataLoading() ? View.VISIBLE : View.GONE}">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
+    </android.support.constraint.ConstraintLayout>
+</layout>
