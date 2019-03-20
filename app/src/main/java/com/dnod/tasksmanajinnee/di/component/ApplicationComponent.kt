@@ -2,6 +2,7 @@ package com.dnod.tasksmanajinnee.di.component
 
 import android.content.Context
 import com.dnod.tasksmanajinnee.di.module.ActivityBindingModule
+import com.dnod.tasksmanajinnee.di.module.NetworkModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -12,7 +13,8 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [
     AndroidSupportInjectionModule::class,
-    ActivityBindingModule::class
+    ActivityBindingModule::class,
+    NetworkModule::class
 ])
 interface ApplicationComponent : AndroidInjector<DaggerApplication> {
 
