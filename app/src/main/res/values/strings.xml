@@ -3,6 +3,7 @@
 
     <string name="common_error_messages_unexpected_server_response">Something went wrong. Try again later</string>
     <string name="message_under_construction">Under construction</string>
+    <string name="common_message_no_data">No data</string>
 
     <!-- Login Screen -->
     <string name="login_screen_title">Sign In</string>
@@ -13,4 +14,12 @@
     <string name="login_screen_btn_login">Log in</string>
     <string name="login_screen_btn_register">Register</string>
     <string name="login_screen_error_password_not_matches">Password not matches</string>
+
+
+    <!-- Tasks Screen -->
+    <string name="tasks_screen_title">My Tasks</string>
+    <string name="tasks_screen_label_due_to">Due to %s</string>
+    <string name="tasks_screen_label_high">High</string>
+    <string name="tasks_screen_label_medium">Medium</string>
+    <string name="tasks_screen_label_low">Low</string>
 </resources>

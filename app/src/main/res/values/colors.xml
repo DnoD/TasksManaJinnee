@@ -13,4 +13,8 @@
     <color name="btn_blue_default_color">#00A9CE</color>
     <color name="btn_blue_pressed_color">#0090DA</color>
     <color name="btn_disable_color">#A3A3A3</color>
+    
+    <color name="priority_high_color">#ff2c02</color>
+    <color name="priority_normal_color">#00cc00</color>
+    <color name="priority_low_color">#ffe100</color>
 </resources>
