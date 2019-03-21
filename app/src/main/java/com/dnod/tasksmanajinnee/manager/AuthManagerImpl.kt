@@ -2,10 +2,12 @@ package com.dnod.tasksmanajinnee.manager
 
 import android.annotation.SuppressLint
 import com.dnod.tasksmanajinnee.data.remote.ClientApi
+import com.dnod.tasksmanajinnee.data.remote.response.AuthResponse
 import com.dnod.tasksmanajinnee.data.remote.response.ErrorResponse
 import com.dnod.tasksmanajinnee.utils.PreferencesUtil
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
+import retrofit2.Response
 import javax.inject.Inject
 
 class AuthManagerImpl @Inject constructor(
@@ -28,16 +30,18 @@ class AuthManagerImpl @Inject constructor(
         clientApi.login(userName, password)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                val token = it.body()?.token
-                if (token == null) {
-                    val errorBody = it.errorBody()?.string() ?: "{}"
-                    val errorResponse = gson.fromJson(errorBody, ErrorResponse::class.java)
-                    callback.onAuthFailure(errorResponse.fields["email"]?.get(0) ?: errorResponse.errorMessage)
-                    return@subscribe
-                }
-                PreferencesUtil.putString(SESSION_TOKEN_KEY, token)
-                isAuthorized = true
-                callback.onAuthSucceed()
+                handleAuthResponse(it, callback)
+            }) { throwable ->
+                callback.onAuthFailure(throwable.localizedMessage)
+            }
+    }
+
+    @SuppressLint("CheckResult")
+    override fun register(userName: String, password: String, callback: AuthManager.AuthCallback) {
+        clientApi.register(userName, password)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                handleAuthResponse(it, callback)
             }) { throwable ->
                 callback.onAuthFailure(throwable.localizedMessage)
             }
@@ -45,5 +49,18 @@ class AuthManagerImpl @Inject constructor(
 
     override fun isAuthorized(): Boolean {
         return isAuthorized
+    }
+
+    private fun handleAuthResponse(response: Response<AuthResponse>, callback: AuthManager.AuthCallback) {
+        val token = response.body()?.token
+        if (token == null) {
+            val errorBody = response.errorBody()?.string() ?: "{}"
+            val errorResponse = gson.fromJson(errorBody, ErrorResponse::class.java)
+            callback.onAuthFailure(errorResponse.fields["email"]?.get(0) ?: errorResponse.errorMessage)
+            return
+        }
+        PreferencesUtil.putString(SESSION_TOKEN_KEY, token)
+        isAuthorized = true
+        callback.onAuthSucceed()
     }
 }

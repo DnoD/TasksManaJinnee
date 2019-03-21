@@ -35,11 +35,12 @@ class LoginViewModel : BaseViewModel(), AuthManager.AuthCallback {
             updateAuthError(getString(R.string.login_screen_error_password_not_matches))
             return
         }
-        if (isRegistrationEnabled.get()) {
-            return
-        }
         isDataLoading.set(true)
-        authManager.auth(userName, password, this)
+        if (isRegistrationEnabled.get()) {
+            authManager.register(userName, password, this)
+        } else {
+            authManager.auth(userName, password, this)
+        }
     }
 
     fun onUsernameChanged(s: CharSequence, start: Int, before: Int, count: Int) {
