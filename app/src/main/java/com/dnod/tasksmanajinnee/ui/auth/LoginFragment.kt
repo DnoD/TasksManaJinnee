@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.dnod.tasksmanajinnee.R
 import com.dnod.tasksmanajinnee.databinding.FragmentLoginBinding
+import com.dnod.tasksmanajinnee.manager.AuthManager
 import com.dnod.tasksmanajinnee.ui.Conductor
 import com.dnod.tasksmanajinnee.ui.ScreenBuilderFactory
 import com.dnod.tasksmanajinnee.ui.base.BaseFragment
@@ -27,6 +28,9 @@ class LoginFragment @Inject constructor() : BaseFragment() {
     @Inject
     lateinit var screenBuilderFactory: ScreenBuilderFactory<BaseFragment>
 
+    @Inject
+    lateinit var authManager: AuthManager
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,7 +39,7 @@ class LoginFragment @Inject constructor() : BaseFragment() {
         viewDataBinding.apply {
             viewModel = ViewModelProviders.of(this@LoginFragment).get(LoginViewModel::class.java)
             val nonOptionalViewModel = viewModel?.let { it } ?: return@apply
-            nonOptionalViewModel.start()
+            nonOptionalViewModel.start(authManager)
         }
         return viewDataBinding.root
     }

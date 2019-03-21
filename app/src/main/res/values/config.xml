@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- API configuration -->
-    <string name="server_url">https://testapi.doitserver.in.ua/api/</string>
+    <string name="server_url">http://testapi.doitserver.in.ua/api/</string>
 </resources>
