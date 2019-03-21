@@ -40,6 +40,7 @@ dependencies {
     implementation "com.android.support:design:$support_library_version"
     implementation "com.android.support:appcompat-v7:$support_library_version"
     implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
 
 
     // Dagger dependencies

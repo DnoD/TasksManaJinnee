@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Tasks ManaJinnee</string>
+
+    <string name="common_error_messages_unexpected_server_response">Something went wrong. Try again later</string>
+    <string name="message_under_construction">Under construction</string>
+
+    <!-- Login Screen -->
+    <string name="login_screen_title">Sign In</string>
+    <string name="login_screen_hint_email">E-mail</string>
+    <string name="login_screen_hint_password">Password</string>
+    <string name="login_screen_hint_password_confirm">Password confirm</string>
+    <string name="login_screen_label_login_register">Login / Register</string>
+    <string name="login_screen_btn_login">Log in</string>
+    <string name="login_screen_btn_register">Register</string>
+    <string name="login_screen_error_password_not_matches">Password not matches</string>
 </resources>

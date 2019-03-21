@@ -3,6 +3,8 @@ package com.dnod.tasksmanajinnee.di.module
 import android.content.Context
 import com.dnod.tasksmanajinnee.R
 import com.dnod.tasksmanajinnee.data.remote.*
+import com.dnod.tasksmanajinnee.manager.AuthManager
+import com.dnod.tasksmanajinnee.manager.AuthManagerImpl
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -20,6 +22,13 @@ abstract class NetworkModule {
         @Singleton
         internal fun provideClientApi(clientApi: RetrofitClientApi): ClientApi {
             return clientApi
+        }
+
+        @JvmStatic
+        @Provides
+        @Singleton
+        internal fun provideAuthManager(authManager: AuthManagerImpl): AuthManager {
+            return authManager
         }
 
         @JvmStatic

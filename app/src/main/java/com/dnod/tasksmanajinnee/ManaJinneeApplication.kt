@@ -2,14 +2,16 @@ package com.dnod.tasksmanajinnee
 
 import com.dnod.tasksmanajinnee.di.component.ApplicationComponent
 import com.dnod.tasksmanajinnee.di.component.DaggerApplicationComponent
+import com.dnod.tasksmanajinnee.utils.PreferencesUtil
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 
-class ManJinneeApplication  : DaggerApplication() {
+class ManaJinneeApplication  : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
         instance = this
+        PreferencesUtil.init(this)
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication>? {
@@ -20,7 +22,7 @@ class ManJinneeApplication  : DaggerApplication() {
 
     companion object {
 
-        lateinit var instance: ManJinneeApplication
+        lateinit var instance: ManaJinneeApplication
 
         var appComponent: ApplicationComponent? = null
             get
