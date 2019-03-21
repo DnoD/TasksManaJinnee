@@ -14,8 +14,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/item_selector"
         android:clipToPadding="false"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:padding="16dp">
 
         <ImageView
             android:id="@+id/ic_chevron"
@@ -24,7 +23,6 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:alpha="0.3"
             android:src="@drawable/ic_chevron_right" />
 
@@ -32,7 +30,6 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_toStartOf="@id/ic_chevron"
             android:ellipsize="end"
             android:lines="1"
@@ -45,7 +42,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:alpha="0.5"
             android:text="@{viewModel.dueToLabel}"

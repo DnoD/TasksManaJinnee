@@ -18,6 +18,12 @@ class TasksAdapter(
     private val data: ArrayList<Task> = ArrayList()
     private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
 
+    fun addAll(data: List<Task>) {
+        val prevSize = this.data.size
+        this.data.addAll(data)
+        notifyItemRangeInserted(prevSize, data.size)
+    }
+
     fun swapData(data: List<Task>) {
         this.data.clear()
         this.data.trimToSize()

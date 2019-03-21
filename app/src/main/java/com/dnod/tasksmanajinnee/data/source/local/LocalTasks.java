@@ -1,11 +1,12 @@
-package com.dnod.tasksmanajinnee.data.remote;
+package com.dnod.tasksmanajinnee.data.source.local;
+
+import java.lang.annotation.Retention;
 
 import javax.inject.Qualifier;
-import java.lang.annotation.Retention;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Qualifier
 @Retention(RUNTIME)
-public @interface ConnectionRetryAttempts {
+public @interface LocalTasks {
 }

@@ -1,7 +1,8 @@
-package com.dnod.tasksmanajinnee.data.remote
+package com.dnod.tasksmanajinnee.data.source.remote
 
-import com.dnod.tasksmanajinnee.data.remote.request.AuthRequest
-import com.dnod.tasksmanajinnee.data.remote.response.AuthResponse
+import com.dnod.tasksmanajinnee.data.source.remote.request.AuthRequest
+import com.dnod.tasksmanajinnee.data.source.remote.response.AuthResponse
+import com.dnod.tasksmanajinnee.data.source.remote.response.TasksResponse
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -19,9 +20,9 @@ import retrofit2.Response
  * This is a concrete ClientApi using Retrofit2 library for the connection with server
  */
 class RetrofitClientApi @Inject constructor(
-    @Endpoint val endpointUrl: String,
-    @ConnectionTimeout val connectionTimeout: Long,
-    @ConnectionRetryAttempts val connectionRetryAttempts: Int
+        @Endpoint val endpointUrl: String,
+        @ConnectionTimeout val connectionTimeout: Long,
+        @ConnectionRetryAttempts val connectionRetryAttempts: Int
 ) : ClientApi {
 
     private val manaJinnee: ManaJinneeService
@@ -94,6 +95,11 @@ class RetrofitClientApi @Inject constructor(
                 }
                 response
             }
+    }
+
+    override fun getTasks(page: Int): Observable<Response<TasksResponse>> {
+        return manaJinnee.getTasks(page)
+                .subscribeOn(Schedulers.io())
     }
 
     override fun setSessionToken(token: String) {
