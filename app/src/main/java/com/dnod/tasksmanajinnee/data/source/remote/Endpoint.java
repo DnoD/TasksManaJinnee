@@ -1,4 +1,4 @@
-package com.dnod.tasksmanajinnee.data.remote;
+package com.dnod.tasksmanajinnee.data.source.remote;
 
 import javax.inject.Qualifier;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Qualifier
 @Retention(RUNTIME)
-public @interface ConnectionTimeout {
+public @interface Endpoint {
 }

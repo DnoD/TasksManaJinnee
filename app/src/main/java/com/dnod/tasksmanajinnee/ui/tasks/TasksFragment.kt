@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.dnod.tasksmanajinnee.R
 import com.dnod.tasksmanajinnee.data.Task
+import com.dnod.tasksmanajinnee.data.source.TasksDataSource
 import com.dnod.tasksmanajinnee.databinding.FragmentTasksBinding
 import com.dnod.tasksmanajinnee.ui.Conductor
 import com.dnod.tasksmanajinnee.ui.ScreenBuilderFactory
@@ -40,6 +41,9 @@ class TasksFragment : BaseFragment(), TasksAdapter.Listener {
     @Inject
     lateinit var screenBuilderFactory: ScreenBuilderFactory<BaseFragment>
 
+    @Inject
+    lateinit var tasksDataSource: TasksDataSource
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -58,7 +62,7 @@ class TasksFragment : BaseFragment(), TasksAdapter.Listener {
                 showMessage(R.string.message_under_construction)
             })
             setupChannelsList()
-            nonOptionalViewModel.start()
+            nonOptionalViewModel.start(tasksDataSource)
         }
         return viewDataBinding.root
     }

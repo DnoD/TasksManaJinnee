@@ -1,4 +1,4 @@
-package com.dnod.tasksmanajinnee.data.remote.response
+package com.dnod.tasksmanajinnee.data.source.remote.response
 
 import com.google.gson.annotations.SerializedName
 

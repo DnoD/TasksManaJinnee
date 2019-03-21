@@ -73,16 +73,20 @@
             <android.support.v4.widget.SwipeRefreshLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:refreshing="@{viewModel.isDataLoading()}"
-                app:onRefreshListener="@{() -> viewModel.onRefresh()}">
+                app:onRefreshListener="@{() -> viewModel.onRefresh()}"
+                app:refreshing="@{viewModel.isDataLoading()}">
 
-                <android.support.v7.widget.RecyclerView
+                <com.dnod.tasksmanajinnee.ui.view.PaginateRecycleView
                     android:id="@+id/tasks"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingBottom="70dp"
                     android:visibility="@{viewModel.isDataAvailable() ? View.VISIBLE : View.GONE}"
                     app:data="@{viewModel.tasks}"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    app:pageData="@{viewModel.pageTasks}"
+                    app:paginateListener="@{viewModel.paginateListener}" />
 
             </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -90,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/common_message_no_data"
+                android:text="@string/common_error_messages_unexpected_server_response"
                 android:textColor="@android:color/black"
                 android:visibility="@{viewModel.isErrorOccurred() ? View.VISIBLE : View.GONE}" />
         </FrameLayout>
