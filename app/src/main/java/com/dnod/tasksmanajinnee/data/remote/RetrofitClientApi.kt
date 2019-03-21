@@ -1,9 +1,7 @@
 package com.dnod.tasksmanajinnee.data.remote
 
-import android.content.Context
 import com.dnod.tasksmanajinnee.data.remote.request.AuthRequest
 import com.dnod.tasksmanajinnee.data.remote.response.AuthResponse
-import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -23,9 +21,7 @@ import retrofit2.Response
 class RetrofitClientApi @Inject constructor(
     @Endpoint val endpointUrl: String,
     @ConnectionTimeout val connectionTimeout: Long,
-    @ConnectionRetryAttempts val connectionRetryAttempts: Int,
-    private val context: Context,
-    private val gson: Gson
+    @ConnectionRetryAttempts val connectionRetryAttempts: Int
 ) : ClientApi {
 
     private val manaJinnee: ManaJinneeService
@@ -74,6 +70,18 @@ class RetrofitClientApi @Inject constructor(
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
         manaJinnee = retrofitClient.create(ManaJinneeService::class.java)
+    }
+
+    override fun register(userName: String, password: String): Observable<Response<AuthResponse>> {
+        return manaJinnee.register(AuthRequest(userName, password))
+            .subscribeOn(Schedulers.io())
+            .map { response ->
+                if (response.errorBody() == null) {
+                    val body = response.body() ?: return@map null
+                    setSessionToken(body.token ?: "")
+                }
+                response
+            }
     }
 
     override fun login(userName: String, password: String): Observable<Response<AuthResponse>> {

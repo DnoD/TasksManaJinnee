@@ -14,4 +14,9 @@ interface ManaJinneeService {
         "Content-Type: application/json")
     @POST("auth")
     fun login(@Body request: AuthRequest): Observable<Response<AuthResponse>>
+
+    @Headers("cache-control: no-cache",
+        "Content-Type: application/json")
+    @POST("/users")
+    fun register(@Body request: AuthRequest): Observable<Response<AuthResponse>>
 }

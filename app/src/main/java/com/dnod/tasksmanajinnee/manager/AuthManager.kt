@@ -11,5 +11,7 @@ interface AuthManager {
 
     fun auth(userName: String, password: String, callback: AuthCallback)
 
+    fun register(userName: String, password: String, callback: AuthCallback)
+
     fun isAuthorized(): Boolean
 }
