@@ -4,12 +4,14 @@ import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.view.View
 import com.dnod.tasksmanajinnee.R
+import com.dnod.tasksmanajinnee.manager.AuthManager
 import com.dnod.tasksmanajinnee.ui.SingleEvent
 import com.dnod.tasksmanajinnee.ui.base.BaseViewModel
 import com.dnod.tasksmanajinnee.ui.getString
 
-class LoginViewModel : BaseViewModel() {
+class LoginViewModel : BaseViewModel(), AuthManager.AuthCallback {
 
+    private lateinit var authManager: AuthManager
     private var userName: String = ""
     private var password: String = ""
     private var passwordConfirm: String = ""
@@ -22,7 +24,8 @@ class LoginViewModel : BaseViewModel() {
     val isDataLoading = ObservableBoolean(false)
     val isRegistrationEnabled = ObservableBoolean(false)
 
-    fun start() {
+    fun start(authManager: AuthManager) {
+        this.authManager = authManager
         updateAuthError("")
         updateBtnAuthText()
     }
@@ -32,7 +35,11 @@ class LoginViewModel : BaseViewModel() {
             updateAuthError(getString(R.string.login_screen_error_password_not_matches))
             return
         }
+        if (isRegistrationEnabled.get()) {
+            return
+        }
         isDataLoading.set(true)
+        authManager.auth(userName, password, this)
     }
 
     fun onUsernameChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -63,12 +70,12 @@ class LoginViewModel : BaseViewModel() {
         updateAuthError("")
     }
 
-    fun onAuthSucceed() {
+    override fun onAuthSucceed() {
         isDataLoading.set(false)
         authSucceedComand.call()
     }
 
-    fun onAuthFailure(errorMessage: String) {
+    override fun onAuthFailure(errorMessage: String) {
         isDataLoading.set(false)
         updateAuthError(errorMessage)
     }
