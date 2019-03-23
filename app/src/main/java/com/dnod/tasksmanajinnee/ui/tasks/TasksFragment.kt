@@ -10,13 +10,18 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ListPopupWindow
 import com.dnod.tasksmanajinnee.R
+import com.dnod.tasksmanajinnee.data.SortModel
 import com.dnod.tasksmanajinnee.data.Task
 import com.dnod.tasksmanajinnee.data.source.TasksDataSource
 import com.dnod.tasksmanajinnee.databinding.FragmentTasksBinding
 import com.dnod.tasksmanajinnee.ui.Conductor
 import com.dnod.tasksmanajinnee.ui.ScreenBuilderFactory
 import com.dnod.tasksmanajinnee.ui.base.BaseFragment
+import com.dnod.tasksmanajinnee.ui.tasks.sort.SortPopupAdapter
 
 import javax.inject.Inject
 
@@ -34,6 +39,15 @@ class TasksFragment : BaseFragment(), TasksAdapter.Listener {
     }
 
     private lateinit var viewDataBinding: FragmentTasksBinding
+    private lateinit var sortPopupWindow: ListPopupWindow
+    private lateinit var sortPopupAdapter: SortPopupAdapter
+    private var selectedSort: SortModel = SortModel(SortModel.Value.NONE, SortModel.Type.NONE)
+    private val sortData = arrayListOf(
+            SortModel(SortModel.Value.NONE, SortModel.Type.NONE),
+            SortModel(SortModel.Value.NAME, SortModel.Type.NONE),
+            SortModel(SortModel.Value.PRIORITY, SortModel.Type.NONE),
+            SortModel(SortModel.Value.DATE, SortModel.Type.NONE)
+    )
 
     @Inject
     lateinit var conductor: Conductor<Conductor.ScreenBuilder<BaseFragment>>
@@ -56,11 +70,16 @@ class TasksFragment : BaseFragment(), TasksAdapter.Listener {
                 showMessage(R.string.message_under_construction)
             })
             nonOptionalViewModel.sortAction.observe(this@TasksFragment, Observer {
-                showMessage(R.string.message_under_construction)
+                if (sortPopupWindow.isShowing) {
+                    sortPopupWindow.dismiss()
+                } else {
+                    showSortPopup()
+                }
             })
             nonOptionalViewModel.createTaskAction.observe(this@TasksFragment, Observer {
                 showMessage(R.string.message_under_construction)
             })
+            setupSortPopup()
             setupChannelsList()
             nonOptionalViewModel.start(tasksDataSource)
         }
@@ -73,6 +92,32 @@ class TasksFragment : BaseFragment(), TasksAdapter.Listener {
 
     override fun getScreenTag(): String {
         return TAG
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (sortPopupWindow.isShowing) {
+            sortPopupWindow.dismiss()
+        }
+    }
+
+    private fun showSortPopup() {
+        sortPopupWindow.show()
+    }
+
+    private fun setupSortPopup() {
+        sortPopupWindow = ListPopupWindow(context)
+        sortPopupWindow.anchorView = viewDataBinding.btnSort
+        sortPopupWindow.setContentWidth(resources.getDimension(R.dimen.sort_popup_width).toInt())
+
+        sortPopupAdapter = SortPopupAdapter(context, selectedSort, sortData)
+        sortPopupAdapter.setDropDownViewResource(R.layout.item_sort_menu)
+        sortPopupWindow.setAdapter(sortPopupAdapter)
+        sortPopupWindow.setOnItemClickListener { _: AdapterView<*>, _: View, position: Int, id: Long ->
+            sortPopupAdapter.setSelectedSortModel(sortData[position])
+            selectedSort = sortData[position]
+            sortPopupWindow.dismiss()
+        }
     }
 
     private fun setupChannelsList() {
