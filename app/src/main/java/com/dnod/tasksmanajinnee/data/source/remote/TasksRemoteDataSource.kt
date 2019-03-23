@@ -2,13 +2,15 @@ package com.dnod.tasksmanajinnee.data.source.remote
 
 import com.dnod.tasksmanajinnee.data.source.TasksDataSource
 import com.dnod.tasksmanajinnee.data.source.remote.response.TasksResponse
+import com.dnod.tasksmanajinnee.sorting.SortingProvider
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import retrofit2.Response
 import javax.inject.Inject
 
 class TasksRemoteDataSource @Inject constructor(
-        private val clientApi: ClientApi
+        private val clientApi: ClientApi,
+        private val sortingProvider: SortingProvider
 ) : TasksDataSource {
 
     private val composite = CompositeDisposable()

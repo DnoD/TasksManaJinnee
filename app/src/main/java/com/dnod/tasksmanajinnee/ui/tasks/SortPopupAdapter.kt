@@ -1,6 +1,5 @@
-package com.dnod.tasksmanajinnee.ui.tasks.sort
+package com.dnod.tasksmanajinnee.ui.tasks
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.view.LayoutInflater
@@ -34,7 +33,7 @@ class SortPopupAdapter(
             }
             it.icon.visibility = if (sortItem.value == SortModel.Value.NONE || !isSelectedItem(sortItem)) View.INVISIBLE else View.VISIBLE
             it.icon.setImageResource(
-                    when (sortItem.type) {
+                    when (selectedSortModel.type) {
                         SortModel.Type.NONE,
                         SortModel.Type.ASC -> R.drawable.ic_arrow_ascending
                         SortModel.Type.DESC -> R.drawable.ic_arrow_descending
@@ -49,6 +48,6 @@ class SortPopupAdapter(
     }
 
     private fun isSelectedItem(sortModel: SortModel): Boolean {
-        return selectedSortModel.equals(sortModel)
+        return selectedSortModel.value == sortModel.value
     }
 }
