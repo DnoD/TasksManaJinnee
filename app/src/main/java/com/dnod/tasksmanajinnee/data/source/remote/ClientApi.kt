@@ -1,5 +1,6 @@
 package com.dnod.tasksmanajinnee.data.source.remote
 
+import com.dnod.tasksmanajinnee.data.SortModel
 import com.dnod.tasksmanajinnee.data.source.remote.response.AuthResponse
 import com.dnod.tasksmanajinnee.data.source.remote.response.TasksResponse
 import io.reactivex.Observable
@@ -11,7 +12,7 @@ interface ClientApi {
 
     fun register(userName: String, password: String) : Observable<Response<AuthResponse>>
 
-    fun getTasks(page: Int) : Observable<Response<TasksResponse>>
+    fun getTasks(page: Int, sortModel: SortModel) : Observable<Response<TasksResponse>>
 
     fun setSessionToken(token: String)
 }

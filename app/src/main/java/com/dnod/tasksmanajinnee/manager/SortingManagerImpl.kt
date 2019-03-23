@@ -9,7 +9,7 @@ class SortingManagerImpl @Inject constructor(
 
     private val sortData = arrayListOf(
             SortModel(SortModel.Value.NONE, SortModel.Type.NONE),
-            SortModel(SortModel.Value.NAME, SortModel.Type.NONE),
+            SortModel(SortModel.Value.TITLE, SortModel.Type.NONE),
             SortModel(SortModel.Value.PRIORITY, SortModel.Type.NONE),
             SortModel(SortModel.Value.DATE, SortModel.Type.NONE)
     )

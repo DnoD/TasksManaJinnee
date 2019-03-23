@@ -20,5 +20,5 @@ interface ManaJinneeService {
     fun register(@Body request: AuthRequest): Observable<Response<AuthResponse>>
 
     @GET("tasks")
-    fun getTasks(@Query("page") page: Int): Observable<Response<TasksResponse>>
+    fun getTasks(@Query("page") page: Int, @Query("sort") sort: String?): Observable<Response<TasksResponse>>
 }

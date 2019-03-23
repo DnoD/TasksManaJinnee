@@ -1,5 +1,6 @@
 package com.dnod.tasksmanajinnee.data.source.remote
 
+import com.dnod.tasksmanajinnee.data.SortModel
 import com.dnod.tasksmanajinnee.data.source.remote.request.AuthRequest
 import com.dnod.tasksmanajinnee.data.source.remote.response.AuthResponse
 import com.dnod.tasksmanajinnee.data.source.remote.response.TasksResponse
@@ -97,8 +98,9 @@ class RetrofitClientApi @Inject constructor(
             }
     }
 
-    override fun getTasks(page: Int): Observable<Response<TasksResponse>> {
-        return manaJinnee.getTasks(page)
+    override fun getTasks(page: Int, sortModel: SortModel): Observable<Response<TasksResponse>> {
+        val sortQuery = createSortQuery(sortModel)
+        return manaJinnee.getTasks(page, sortQuery)
                 .subscribeOn(Schedulers.io())
     }
 
@@ -106,5 +108,20 @@ class RetrofitClientApi @Inject constructor(
         if (token.isNotEmpty()) {
             authorizationString = "Bearer $token"
         }
+    }
+
+    private fun createSortQuery(sortModel: SortModel): String? {
+        val sortValue =  when(sortModel.value) {
+            SortModel.Value.DATE -> "dueBy "
+            SortModel.Value.PRIORITY -> "priority "
+            SortModel.Value.TITLE -> "title "
+            SortModel.Value.NONE -> return null
+        }
+        val sortType = when(sortModel.type) {
+            SortModel.Type.ASC -> "asc"
+            SortModel.Type.DESC -> "desc"
+            SortModel.Type.NONE -> return null
+        }
+        return sortValue + sortType
     }
 }

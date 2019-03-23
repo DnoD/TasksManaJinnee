@@ -25,7 +25,7 @@
 
 
     <string name="sort_value_none">None</string>
-    <string name="sort_value_name">Name</string>
+    <string name="sort_value_title">Title</string>
     <string name="sort_value_priority">Priority</string>
     <string name="sort_value_date">Date</string>
 </resources>

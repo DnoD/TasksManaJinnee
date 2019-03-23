@@ -18,7 +18,7 @@ class TasksRemoteDataSource @Inject constructor(
 
     override fun getTasks(listener: TasksDataSource.GetTasksListener) {
         composite.clear()
-        composite.add(clientApi.getTasks(1)
+        composite.add(clientApi.getTasks(1, sortingProvider.getCurrentSortModel())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ response ->
                 handleTasksResponse(response, listener)
@@ -30,7 +30,7 @@ class TasksRemoteDataSource @Inject constructor(
     override fun getNextPage(listener: TasksDataSource.GetTasksListener) {
         composite.clear()
         nextPage?.let {
-            composite.add(clientApi.getTasks(it)
+            composite.add(clientApi.getTasks(it, sortingProvider.getCurrentSortModel())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
                     handleTasksResponse(response, listener)

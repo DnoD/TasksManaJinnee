@@ -6,7 +6,7 @@ data class SortModel(
 ) {
 
     enum class Value {
-        NONE, NAME, PRIORITY, DATE
+        NONE, TITLE, PRIORITY, DATE
     }
 
     enum class Type {
