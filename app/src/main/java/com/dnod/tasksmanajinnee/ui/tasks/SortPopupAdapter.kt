@@ -28,7 +28,7 @@ class SortPopupAdapter(
             it.text.text = when (sortItem.value) {
                 SortModel.Value.NONE -> context.getString(R.string.sort_value_none)
                 SortModel.Value.DATE -> context.getString(R.string.sort_value_date)
-                SortModel.Value.NAME -> context.getString(R.string.sort_value_name)
+                SortModel.Value.TITLE -> context.getString(R.string.sort_value_title)
                 SortModel.Value.PRIORITY -> context.getString(R.string.sort_value_priority)
             }
             it.icon.visibility = if (sortItem.value == SortModel.Value.NONE || !isSelectedItem(sortItem)) View.INVISIBLE else View.VISIBLE

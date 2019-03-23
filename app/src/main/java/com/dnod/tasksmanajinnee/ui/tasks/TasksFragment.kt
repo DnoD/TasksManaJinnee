@@ -113,6 +113,7 @@ class TasksFragment : BaseFragment(), TasksAdapter.Listener {
         sortPopupWindow.setAdapter(sortPopupAdapter)
         sortPopupWindow.setOnItemClickListener { _: AdapterView<*>, _: View, position: Int, id: Long ->
             sortPopupAdapter.setSelectedSortModel(sortingManager.applySortModel(sortingProvider.getAvailableSortValues()[position]))
+            viewDataBinding.viewModel?.onRefresh()
             sortPopupWindow.dismiss()
         }
     }
