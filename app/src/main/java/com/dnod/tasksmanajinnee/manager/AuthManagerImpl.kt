@@ -1,9 +1,9 @@
 package com.dnod.tasksmanajinnee.manager
 
 import android.annotation.SuppressLint
-import com.dnod.tasksmanajinnee.data.remote.ClientApi
-import com.dnod.tasksmanajinnee.data.remote.response.AuthResponse
-import com.dnod.tasksmanajinnee.data.remote.response.ErrorResponse
+import com.dnod.tasksmanajinnee.data.source.remote.ClientApi
+import com.dnod.tasksmanajinnee.data.source.remote.response.AuthResponse
+import com.dnod.tasksmanajinnee.data.source.remote.response.ErrorResponse
 import com.dnod.tasksmanajinnee.utils.PreferencesUtil
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -11,8 +11,8 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class AuthManagerImpl @Inject constructor(
-    private val clientApi: ClientApi,
-    private val gson: Gson
+        private val clientApi: ClientApi,
+        private val gson: Gson
 ) : AuthManager {
     private val SESSION_TOKEN_KEY = "session_token"
     private var isAuthorized: Boolean = false

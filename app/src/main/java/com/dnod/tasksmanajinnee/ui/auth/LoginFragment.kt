@@ -13,13 +13,14 @@ import com.dnod.tasksmanajinnee.manager.AuthManager
 import com.dnod.tasksmanajinnee.ui.Conductor
 import com.dnod.tasksmanajinnee.ui.ScreenBuilderFactory
 import com.dnod.tasksmanajinnee.ui.base.BaseFragment
+import com.dnod.tasksmanajinnee.ui.tasks.TasksFragment
 import javax.inject.Inject
 
 class LoginFragment @Inject constructor() : BaseFragment() {
 
     private lateinit var viewDataBinding: FragmentLoginBinding
     private val authSucceedObserver = Observer<Void> {
-        showMessage(R.string.message_under_construction)
+        conductor.goTo(screenBuilderFactory.create(TasksFragment.createInstance()))
     }
 
     @Inject
@@ -32,8 +33,8 @@ class LoginFragment @Inject constructor() : BaseFragment() {
     lateinit var authManager: AuthManager
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         viewDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
         viewDataBinding.apply {

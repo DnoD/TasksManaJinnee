@@ -2,7 +2,7 @@ package com.dnod.tasksmanajinnee.di.module
 
 import android.content.Context
 import com.dnod.tasksmanajinnee.R
-import com.dnod.tasksmanajinnee.data.remote.*
+import com.dnod.tasksmanajinnee.data.source.remote.*
 import com.dnod.tasksmanajinnee.manager.AuthManager
 import com.dnod.tasksmanajinnee.manager.AuthManagerImpl
 import com.google.gson.Gson

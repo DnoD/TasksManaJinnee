@@ -6,14 +6,16 @@ import android.support.v4.app.FragmentManager
 import android.view.View
 import com.dnod.tasksmanajinnee.R
 import com.dnod.tasksmanajinnee.databinding.ActivityMainBinding
+import com.dnod.tasksmanajinnee.manager.AuthManager
 import com.dnod.tasksmanajinnee.ui.Conductor
 import com.dnod.tasksmanajinnee.ui.ScreenBuilderFactory
 import com.dnod.tasksmanajinnee.ui.auth.LoginFragment
 import com.dnod.tasksmanajinnee.ui.base.BaseActivity
 import com.dnod.tasksmanajinnee.ui.base.BaseFragment
+import com.dnod.tasksmanajinnee.ui.tasks.TasksFragment
 import javax.inject.Inject
 
-class MainActivity : BaseActivity() , Conductor<Conductor.ScreenBuilder<BaseFragment>> {
+class MainActivity : BaseActivity(), Conductor<Conductor.ScreenBuilder<BaseFragment>> {
 
     private lateinit var bindingObject: ActivityMainBinding
 
@@ -25,11 +27,18 @@ class MainActivity : BaseActivity() , Conductor<Conductor.ScreenBuilder<BaseFrag
     @Inject
     lateinit var screenBuilderFactory: ScreenBuilderFactory<BaseFragment>
 
+    @Inject
+    lateinit var authManager: AuthManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bindingObject = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        goTo(screenBuilderFactory.create(LoginFragment.createInstance()))
+        if (authManager.isAuthorized()) {
+            goTo(screenBuilderFactory.create(TasksFragment.createInstance()))
+        } else {
+            goTo(screenBuilderFactory.create(LoginFragment.createInstance()))
+        }
     }
 
     override fun goTo(builder: Conductor.ScreenBuilder<BaseFragment>) {

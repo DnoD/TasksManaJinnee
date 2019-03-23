@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.dnod.tasksmanajinnee.ui.tasks.TaskItemViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_selector"
+        android:clipToPadding="false"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/ic_chevron"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:alpha="0.3"
+            android:src="@drawable/ic_chevron_right" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/ic_chevron"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="@{viewModel.title}"
+            android:textColor="@android:color/black"
+            tools:text="Asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasd" />
+
+        <TextView
+            android:id="@+id/due_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginTop="4dp"
+            android:alpha="0.5"
+            android:text="@{viewModel.dueToLabel}"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            tools:text="Due to 14/14/14" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_alignBaseline="@id/due_label"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/due_label"
+            android:text="@{viewModel.priorityLabel}"
+            android:textColor="@{viewModel.priorityLabelTextColor}"
+            android:textSize="12sp"
+            tools:text="High"
+            tools:textColor="@color/priority_normal_color" />
+
+    </RelativeLayout>
+</layout>
