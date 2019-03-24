@@ -11,4 +11,10 @@ object DateFormatUtil {
         val formatter = SimpleDateFormat("MM/dd/yy")
         return formatter.format(date)
     }
+
+    @SuppressLint("SimpleDateFormat")
+    fun getFullTaskDue(date: Date): String {
+        val formatter = SimpleDateFormat("EEEE dd MMM, yyyy")
+        return formatter.format(date)
+    }
 }

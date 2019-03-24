@@ -6,6 +6,7 @@ import com.dnod.tasksmanajinnee.sorting.SortingProvider
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import retrofit2.Response
+import java.net.HttpURLConnection
 import javax.inject.Inject
 
 class TasksRemoteDataSource @Inject constructor(
@@ -17,7 +18,6 @@ class TasksRemoteDataSource @Inject constructor(
     private var nextPage: Int? = 0
 
     override fun getTasks(listener: TasksDataSource.GetTasksListener) {
-        composite.clear()
         composite.add(clientApi.getTasks(1, sortingProvider.getCurrentSortModel())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ response ->
@@ -28,7 +28,6 @@ class TasksRemoteDataSource @Inject constructor(
     }
 
     override fun getNextPage(listener: TasksDataSource.GetTasksListener) {
-        composite.clear()
         nextPage?.let {
             composite.add(clientApi.getTasks(it, sortingProvider.getCurrentSortModel())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -38,6 +37,25 @@ class TasksRemoteDataSource @Inject constructor(
                     listener.onReceiveTasksFailure()
                 })
         }
+    }
+
+    override fun getTask(taskid: String, listener: TasksDataSource.GetTaskListener) {
+        composite.add(clientApi.getTask(taskid)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response ->
+                    if (response.code() == HttpURLConnection.HTTP_NOT_FOUND) {
+                        listener.onTaskNotFound()
+                        return@subscribe
+                    }
+                    val task = response.body()
+                    if (response.errorBody() != null || task == null) {
+                        listener.onReceiveTaskFailure()
+                        return@subscribe
+                    }
+                    listener.onReceiveTask(task.task)
+                }) {
+                    listener.onReceiveTaskFailure()
+                })
     }
 
     private fun handleTasksResponse(response: Response<TasksResponse>, listener: TasksDataSource.GetTasksListener) {
