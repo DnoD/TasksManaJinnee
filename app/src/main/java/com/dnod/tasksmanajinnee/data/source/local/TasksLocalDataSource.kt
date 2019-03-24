@@ -14,4 +14,7 @@ class TasksLocalDataSource @Inject constructor(
 
     override fun getNextPage(listener: TasksDataSource.GetTasksListener) {
     }
+
+    override fun getTask(taskid: String, listener: TasksDataSource.GetTaskListener) {
+    }
 }

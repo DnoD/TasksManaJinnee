@@ -2,6 +2,7 @@ package com.dnod.tasksmanajinnee.data.source.remote
 
 import com.dnod.tasksmanajinnee.data.source.remote.request.AuthRequest
 import com.dnod.tasksmanajinnee.data.source.remote.response.AuthResponse
+import com.dnod.tasksmanajinnee.data.source.remote.response.TaskResponse
 import com.dnod.tasksmanajinnee.data.source.remote.response.TasksResponse
 import io.reactivex.Observable
 import retrofit2.Response
@@ -21,4 +22,7 @@ interface ManaJinneeService {
 
     @GET("tasks")
     fun getTasks(@Query("page") page: Int, @Query("sort") sort: String?): Observable<Response<TasksResponse>>
+
+    @GET("tasks/{id}")
+    fun getTask(@Path("id") taskId: String): Observable<Response<TaskResponse>>
 }

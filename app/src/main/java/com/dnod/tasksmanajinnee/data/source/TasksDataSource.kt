@@ -10,7 +10,17 @@ interface TasksDataSource {
         fun onReceiveTasksFailure()
     }
 
+    interface GetTaskListener {
+        fun onReceiveTask(task: Task)
+
+        fun onTaskNotFound()
+
+        fun onReceiveTaskFailure()
+    }
+
     fun getTasks(listener: GetTasksListener)
+
+    fun getTask(taskid: String, listener: GetTaskListener)
 
     fun getNextPage(listener: GetTasksListener)
 }

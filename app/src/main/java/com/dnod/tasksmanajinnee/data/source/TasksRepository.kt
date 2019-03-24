@@ -16,4 +16,8 @@ class TasksRepository @Inject constructor(
     override fun getNextPage(listener: TasksDataSource.GetTasksListener) {
         remoteDataSource.getNextPage(listener)
     }
+
+    override fun getTask(taskid: String, listener: TasksDataSource.GetTaskListener) {
+        remoteDataSource.getTask(taskid, listener)
+    }
 }
