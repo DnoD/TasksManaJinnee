@@ -25,4 +25,7 @@ interface ManaJinneeService {
 
     @GET("tasks/{id}")
     fun getTask(@Path("id") taskId: String): Observable<Response<TaskResponse>>
+
+    @DELETE("tasks/{id}")
+    fun deleteTask(@Path("id") taskId: String): Observable<Response<Void>>
 }

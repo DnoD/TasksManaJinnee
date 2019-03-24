@@ -10,14 +10,16 @@ import com.dnod.tasksmanajinnee.ui.getColor
 import com.dnod.tasksmanajinnee.ui.getString
 import com.dnod.tasksmanajinnee.ui.view.ToolBarViewModel
 
-class TaskDetailsViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSource.GetTaskListener {
+class TaskDetailsViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSource.GetTaskListener, TasksDataSource.TaskDeleteListener {
 
     private lateinit var tasksDataSource: TasksDataSource
+    private var task: Task? = null
 
     internal val backAction = SingleEvent<Void>()
     internal val editAction = SingleEvent<Void>()
-    internal val deleteAction = SingleEvent<Void>()
+    internal val deleteAction = SingleEvent<Task>()
     internal val taskDeletedEvent = SingleEvent<Void>()
+    internal val errorEvent = SingleEvent<String>()
 
     val title = ObservableField<String>()
     val due = ObservableField<String>()
@@ -43,10 +45,17 @@ class TaskDetailsViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDa
     }
 
     fun delete() {
-        deleteAction.call()
+        deleteAction.postValue(task)
+    }
+
+    fun confirmDeletion() {
+        task?.let {
+            tasksDataSource.delete(it, this)
+        }
     }
 
     override fun onReceiveTask(task: Task) {
+        this.task = task
         title.set(task.title)
         due.set(task.getFullFormattedDueBy())
         priority.set(task.getPriorityString())
@@ -63,5 +72,14 @@ class TaskDetailsViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDa
     }
 
     override fun onReceiveTaskFailure() {
+        errorEvent.postValue(getString(R.string.common_error_messages_unexpected_server_response))
+    }
+
+    override fun onTaskDeleted(task: Task) {
+        taskDeletedEvent.call()
+    }
+
+    override fun onTaskDeleteFailure() {
+        errorEvent.postValue(getString(R.string.common_error_messages_unexpected_server_response))
     }
 }

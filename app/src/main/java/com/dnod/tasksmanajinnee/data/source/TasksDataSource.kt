@@ -18,9 +18,17 @@ interface TasksDataSource {
         fun onReceiveTaskFailure()
     }
 
+    interface TaskDeleteListener {
+        fun onTaskDeleted(task: Task)
+
+        fun onTaskDeleteFailure()
+    }
+
     fun getTasks(listener: GetTasksListener)
 
     fun getTask(taskid: String, listener: GetTaskListener)
 
     fun getNextPage(listener: GetTasksListener)
+
+    fun delete(task: Task, listener: TaskDeleteListener)
 }

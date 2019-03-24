@@ -10,12 +10,16 @@ abstract class BaseFragment : DaggerFragment(), BackInterceptor {
 
     protected abstract val rootView: View
 
-    fun showMessage(message: Int) {
-        showMessage(getString(message))
+    fun showMessage(@StringRes message: Int) {
+        makeSnackBar(message, Snackbar.LENGTH_LONG).show()
     }
 
     fun showMessage(message: String) {
         makeSnackBar(message, Snackbar.LENGTH_LONG).show()
+    }
+
+    fun showRootMessage(@StringRes message: Int) {
+        makeRootSnackBar(message, Snackbar.LENGTH_LONG).show()
     }
 
     protected fun makeSnackBar(@StringRes message: Int, duration: Int): Snackbar {
