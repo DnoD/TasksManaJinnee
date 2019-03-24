@@ -111,6 +111,11 @@ class RetrofitClientApi @Inject constructor(
                 .subscribeOn(Schedulers.io())
     }
 
+    override fun deleteTask(task: Task): Observable<Response<Void>> {
+        return manaJinnee.deleteTask(task.id)
+                .subscribeOn(Schedulers.io())
+    }
+
     override fun setSessionToken(token: String) {
         if (token.isNotEmpty()) {
             authorizationString = "Bearer $token"

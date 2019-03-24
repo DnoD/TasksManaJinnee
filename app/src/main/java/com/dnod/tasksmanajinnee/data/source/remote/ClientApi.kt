@@ -10,13 +10,15 @@ import retrofit2.Response
 
 interface ClientApi {
 
-    fun login(userName: String, password: String) : Observable<Response<AuthResponse>>
+    fun login(userName: String, password: String): Observable<Response<AuthResponse>>
 
-    fun register(userName: String, password: String) : Observable<Response<AuthResponse>>
+    fun register(userName: String, password: String): Observable<Response<AuthResponse>>
 
-    fun getTasks(page: Int, sortModel: SortModel) : Observable<Response<TasksResponse>>
+    fun getTasks(page: Int, sortModel: SortModel): Observable<Response<TasksResponse>>
 
-    fun getTask(taskId: String) : Observable<Response<TaskResponse>>
+    fun getTask(taskId: String): Observable<Response<TaskResponse>>
 
     fun setSessionToken(token: String)
+
+    fun deleteTask(task: Task): Observable<Response<Void>>
 }

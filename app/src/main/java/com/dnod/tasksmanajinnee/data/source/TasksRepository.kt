@@ -1,5 +1,6 @@
 package com.dnod.tasksmanajinnee.data.source
 
+import com.dnod.tasksmanajinnee.data.Task
 import com.dnod.tasksmanajinnee.data.source.local.LocalTasks
 import com.dnod.tasksmanajinnee.data.source.remote.RemoteTasks
 import javax.inject.Inject
@@ -19,5 +20,9 @@ class TasksRepository @Inject constructor(
 
     override fun getTask(taskid: String, listener: TasksDataSource.GetTaskListener) {
         remoteDataSource.getTask(taskid, listener)
+    }
+
+    override fun delete(task: Task, listener: TasksDataSource.TaskDeleteListener) {
+        remoteDataSource.delete(task, listener)
     }
 }

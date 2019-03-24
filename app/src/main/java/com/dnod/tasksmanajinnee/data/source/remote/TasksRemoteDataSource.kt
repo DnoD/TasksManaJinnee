@@ -1,5 +1,6 @@
 package com.dnod.tasksmanajinnee.data.source.remote
 
+import com.dnod.tasksmanajinnee.data.Task
 import com.dnod.tasksmanajinnee.data.source.TasksDataSource
 import com.dnod.tasksmanajinnee.data.source.remote.response.TasksResponse
 import com.dnod.tasksmanajinnee.sorting.SortingProvider
@@ -47,14 +48,32 @@ class TasksRemoteDataSource @Inject constructor(
                         listener.onTaskNotFound()
                         return@subscribe
                     }
-                    val task = response.body()
-                    if (response.errorBody() != null || task == null) {
+                    val body = response.body()
+                    if (response.errorBody() != null || body == null) {
                         listener.onReceiveTaskFailure()
                         return@subscribe
                     }
-                    listener.onReceiveTask(task.task)
+                    listener.onReceiveTask(body.task)
                 }) {
                     listener.onReceiveTaskFailure()
+                })
+    }
+
+    override fun delete(task: Task, listener: TasksDataSource.TaskDeleteListener) {
+        composite.add(clientApi.deleteTask(task)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response ->
+                    if (response.code() == HttpURLConnection.HTTP_ACCEPTED) {
+                        listener.onTaskDeleted(task)
+                        return@subscribe
+                    }
+                    if (response.errorBody() != null) {
+                        listener.onTaskDeleteFailure()
+                        return@subscribe
+                    }
+                    listener.onTaskDeleted(task)
+                }) {
+                    listener.onTaskDeleteFailure()
                 })
     }
 

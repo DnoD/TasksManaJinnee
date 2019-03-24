@@ -31,6 +31,11 @@
     <string name="task_details_screen_label_description">Description</string>
     <string name="task_details_screen_label_notification">Notification</string>
     <string name="task_details_screen_btn_delete">Delete event</string>
+    <string name="task_details_screen_message_deleted">Task removed</string>
+    <string name="task_details_screen_removal_dialog_title">Delete event</string>
+    <string name="task_details_screen_removal_dialog_mesage">The event %s will be removed permanently</string>
+    <string name="task_details_screen_removal_dialog_ok">Proceed</string>
+    <string name="task_details_screen_removal_dialog_cancel">Cancel</string>
 
     <string name="sort_value_none">None</string>
     <string name="sort_value_title">Title</string>
