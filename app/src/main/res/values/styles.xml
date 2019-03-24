@@ -21,4 +21,13 @@
         <item name="android:background">@drawable/btn_blue_rounded_selector_bg</item>
     </style>
 
+    <style name="BottomButtonStyle">
+        <item name="android:minHeight">@dimen/btn_min_height</item>
+        <item name="android:layout_height">@dimen/btn_min_height</item>
+        <item name="android:background">@drawable/btn_blue_selector_bg</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>

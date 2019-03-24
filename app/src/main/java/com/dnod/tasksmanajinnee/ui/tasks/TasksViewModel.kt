@@ -3,14 +3,16 @@ package com.dnod.tasksmanajinnee.ui.tasks
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
+import com.dnod.tasksmanajinnee.R
 import com.dnod.tasksmanajinnee.data.Task
 import com.dnod.tasksmanajinnee.data.TaskPriority
 import com.dnod.tasksmanajinnee.data.source.TasksDataSource
 import com.dnod.tasksmanajinnee.ui.SingleEvent
+import com.dnod.tasksmanajinnee.ui.view.ToolBarViewModel
 import com.paginate.Paginate
 import java.util.*
 
-class TasksViewModel : ViewModel(), Paginate.Callbacks, TasksDataSource.GetTasksListener {
+class TasksViewModel : ViewModel(), Paginate.Callbacks, TasksDataSource.GetTasksListener, ToolBarViewModel.Listener {
 
     private lateinit var tasksDataSource: TasksDataSource
     private var hasNextPage = false
@@ -27,12 +29,16 @@ class TasksViewModel : ViewModel(), Paginate.Callbacks, TasksDataSource.GetTasks
     val tasks = ObservableField<List<Task>>()
     val pageTasks = ObservableField<List<Task>>()
     val paginateListener = ObservableField<Paginate.Callbacks>()
+    val toolbarViewModel = ObservableField<ToolBarViewModel>()
 
     fun start(tasksDataSource: TasksDataSource) {
+        toolbarViewModel.set(ToolBarViewModel(R.string.tasks_screen_title, R.drawable.ic_alert, R.drawable.ic_sort, this))
         this.tasksDataSource = tasksDataSource
         tasks.set(emptyList())
-        showLoadingState()
+        hasNextPage = false
+        isNextPageLoading = false
         isRefreshRequested = true
+        showLoadingState()
         tasksDataSource.getTasks(this)
     }
 
@@ -40,18 +46,18 @@ class TasksViewModel : ViewModel(), Paginate.Callbacks, TasksDataSource.GetTasks
         createTaskAction.call()
     }
 
-    fun sort() {
-        sortAction.call()
-    }
-
-    fun alert() {
-        alertAction.call()
-    }
-
     fun onRefresh() {
         isRefreshRequested = true
         showLoadingState()
         tasksDataSource.getTasks(this)
+    }
+
+    override fun onLeftAction() {
+        alertAction.call()
+    }
+
+    override fun onRightAction() {
+        sortAction.call()
     }
 
     override fun onReceiveTasks(tasks: List<Task>, hasNextPage: Boolean) {

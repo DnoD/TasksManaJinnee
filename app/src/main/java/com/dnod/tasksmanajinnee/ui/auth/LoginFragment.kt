@@ -57,6 +57,9 @@ class LoginFragment @Inject constructor() : BaseFragment() {
         viewModel.authSucceedComand.removeObserver(authSucceedObserver)
     }
 
+    override val rootView: View
+        get() = viewDataBinding.root
+
     override fun getScreenTag(): String {
         return TAG
     }

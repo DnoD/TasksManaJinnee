@@ -2,8 +2,9 @@
     <string name="app_name">Tasks ManaJinnee</string>
 
     <string name="common_error_messages_unexpected_server_response">Something went wrong. Try again later</string>
-    <string name="message_under_construction">Under construction</string>
     <string name="common_message_no_data">No data</string>
+    <string name="common_label_none">None</string>
+    <string name="message_under_construction">Under construction</string>
 
     <!-- Login Screen -->
     <string name="login_screen_title">Sign In</string>
@@ -23,6 +24,13 @@
     <string name="tasks_screen_label_medium">Medium</string>
     <string name="tasks_screen_label_low">Low</string>
 
+
+    <!-- Task Details Screen -->
+    <string name="task_details_screen_title">Task Details</string>
+    <string name="task_details_screen_label_priority">Priority</string>
+    <string name="task_details_screen_label_description">Description</string>
+    <string name="task_details_screen_label_notification">Notification</string>
+    <string name="task_details_screen_btn_delete">Delete event</string>
 
     <string name="sort_value_none">None</string>
     <string name="sort_value_title">Title</string>
