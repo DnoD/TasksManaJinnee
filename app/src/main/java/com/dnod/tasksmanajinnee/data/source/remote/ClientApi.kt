@@ -23,4 +23,6 @@ interface ClientApi {
     fun deleteTask(task: Task): Observable<Response<Void>>
 
     fun createTask(task: Task): Observable<Response<TaskResponse>>
+
+    fun updateTask(task: Task): Observable<Response<TaskResponse>>
 }

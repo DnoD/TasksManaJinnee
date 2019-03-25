@@ -1,5 +1,6 @@
 package com.dnod.tasksmanajinnee.ui.task
 
+import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.view.View
 import com.dnod.tasksmanajinnee.R
@@ -13,7 +14,7 @@ import com.dnod.tasksmanajinnee.ui.view.ToolBarViewModel
 import com.dnod.tasksmanajinnee.utils.DateFormatUtil
 import java.util.*
 
-class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSource.GetTaskListener, TasksDataSource.TaskCreateListener {
+class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSource.GetTaskListener, TasksDataSource.TaskCreateListener, TasksDataSource.TaskUpdateListener {
 
     private lateinit var tasksDataSource: TasksDataSource
     private var task: Task? = null
@@ -28,6 +29,9 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
     internal val saveSucceedEvent = SingleEvent<Void>()
     internal val errorEvent = SingleEvent<String>()
 
+    val isHighPriority = ObservableBoolean()
+    val isMediumPriority = ObservableBoolean()
+    val isLowPriority = ObservableBoolean()
     val title = ObservableField<String>()
     val dueTo = ObservableField<String>()
     val priority = ObservableField<String>()
@@ -90,13 +94,29 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
         errorEvent.postValue(getString(R.string.task_create_update_screen_message_action_failure))
     }
 
+    override fun onTaskUpdated(task: Task) {
+        saveSucceedEvent.call()
+    }
+
+    override fun onTaskUpdateFailure() {
+        errorEvent.postValue(getString(R.string.task_create_update_screen_message_action_failure))
+    }
+
     override fun onLeftAction() {
         backAction.call()
     }
 
     override fun onRightAction() {
         if (validateForm()) {
-            tasksDataSource.create(Task(null, taskTitle, taskDescription, taskDueTo.toString(), TaskPriority.valueOf(taskPriority)), this)
+            if (isCreationWork) {
+                tasksDataSource.create(Task(null, taskTitle, taskDescription, taskDueTo.toString(), TaskPriority.valueOf(taskPriority)), this)
+            } else {
+                prepareUpdatedTask()?.let {
+                    tasksDataSource.update(it, this)
+                    return
+                }
+                saveSucceedEvent.call()
+            }
         } else {
             errorEvent.postValue(getString(R.string.task_create_update_screen_message_empty_fields))
         }
@@ -104,6 +124,9 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
 
     override fun onReceiveTask(task: Task) {
         this.task = task
+        isHighPriority.set(task.priority == TaskPriority.HIGHT)
+        isMediumPriority.set(task.priority == TaskPriority.NORMAL)
+        isLowPriority.set(task.priority == TaskPriority.LOW)
         title.set(task.title)
         dueTo.set(task.getFormattedDueBy())
         priority.set(task.getPriorityString())
@@ -132,5 +155,25 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
         }
         return taskTitle.isNotEmpty() &&
                 taskDescription.isNotEmpty()
+    }
+
+    private fun prepareUpdatedTask(): Task? {
+        task?.let {
+            val titleChanged = it.title != taskTitle
+            val priorityChanged = taskPriority.isNotEmpty() && it.priority != TaskPriority.valueOf(taskPriority)
+            val dueChanged = taskDueTo != 0L && it.dueBy != taskDueTo.toString()
+            val descriptionChanged = it.description != taskDescription
+            if (titleChanged ||
+                    priorityChanged ||
+                    dueChanged ||
+                    descriptionChanged) {
+                return Task(it.id,
+                        if (titleChanged) taskTitle else it.title,
+                        if (descriptionChanged) taskDescription else it.description,
+                        if (dueChanged) DateFormatUtil.getFixedTime(taskDueTo, true).toString() else it.dueBy,
+                        if (priorityChanged) TaskPriority.valueOf(taskPriority) else it.priority)
+            }
+        }
+        return null
     }
 }
