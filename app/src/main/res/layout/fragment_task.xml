@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.dnod.tasksmanajinnee.ui.task.TaskViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/details_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:viewModel="@{viewModel.toolbarViewModel}" />
+
+        <TextView
+            android:id="@+id/label_title"
+            style="@style/TextLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/task_create_update_screen_label_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <EditText
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_input_field_bordered"
+            android:gravity="start"
+            android:inputType="textMultiLine|textCapSentences"
+            android:lines="3"
+            android:maxLength="120"
+            android:maxLines="5"
+            android:onTextChanged="@{viewModel::onTitleChanged}"
+            android:padding="6dp"
+            android:text="@{viewModel.title}"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_title" />
+
+        <View
+            android:id="@+id/priority_divider"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/shape_list_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title" />
+
+        <TextView
+            android:id="@+id/label_priority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/task_details_screen_label_priority"
+            android:textColor="@color/text_hint_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/priority_divider" />
+
+        <RadioGroup
+            android:id="@+id/priority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_priority">
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="@{viewModel.isHighPriority}"
+                android:gravity="center"
+                android:onCheckedChanged="@{viewModel::onPriorityHighChanged}"
+                android:paddingStart="10dp"
+                android:text="@string/tasks_screen_label_high"
+                android:textColor="@color/priority_high_color" />
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="@{viewModel.isMediumPriority}"
+                android:gravity="center"
+                android:onCheckedChanged="@{viewModel::onPriorityMediumChanged}"
+                android:paddingStart="10dp"
+                android:text="@string/tasks_screen_label_medium"
+                android:textColor="@color/priority_normal_color" />
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="@{viewModel.isLowPriority}"
+                android:gravity="center"
+                android:onCheckedChanged="@{viewModel::onPriorityLowChanged}"
+                android:paddingStart="10dp"
+                android:text="@string/tasks_screen_label_low"
+                android:textColor="@color/priority_low_color" />
+
+        </RadioGroup>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:background="@drawable/shape_list_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/priority" />
+
+        <TextView
+            android:id="@+id/label_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/task_details_screen_label_description"
+            android:textColor="@color/text_hint_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/priority" />
+
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_input_field_bordered"
+            android:gravity="start"
+            android:inputType="textMultiLine|textCapSentences"
+            android:lines="3"
+            android:maxLength="120"
+            android:maxLines="5"
+            android:onTextChanged="@{viewModel::onDescriptionChanged}"
+            android:padding="6dp"
+            android:text="@{viewModel.description}"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_description"
+            tools:text="Some description goes here" />
+
+        <View
+            android:id="@+id/description_divider"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/shape_list_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/description" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.pickDueTo()}"
+            android:padding="10dp"
+            android:text="@string/task_create_update_screen_label_due"
+            android:textColor="@color/text_hint_color"
+            app:layout_constraintEnd_toStartOf="@id/due_to"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/description_divider" />
+
+        <TextView
+            android:id="@+id/due_to"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.pickDueTo()}"
+            android:padding="10dp"
+            android:text="@{viewModel.dueTo}"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toStartOf="@id/ic_due_to"
+            app:layout_constraintTop_toBottomOf="@id/description_divider"
+            tools:text="None" />
+
+        <ImageView
+            android:id="@+id/ic_due_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.pickDueTo()}"
+            android:src="@drawable/ic_chevron_right"
+            app:layout_constraintBottom_toBottomOf="@id/due_to"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/due_to" />
+
+        <View
+            android:id="@+id/divider_due_to"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:background="@drawable/shape_list_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/due_to" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/task_details_screen_label_notification"
+            android:textColor="@color/text_hint_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_due_to" />
+
+        <TextView
+            android:id="@+id/notification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@{viewModel.notification}"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_due_to"
+            tools:text="None" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:background="@drawable/shape_list_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/notification" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

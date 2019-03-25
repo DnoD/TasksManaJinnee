@@ -5,6 +5,7 @@ import com.dnod.tasksmanajinnee.R
 import com.dnod.tasksmanajinnee.data.Task
 import com.dnod.tasksmanajinnee.data.TaskPriority
 import com.dnod.tasksmanajinnee.data.getFormattedDueBy
+import com.dnod.tasksmanajinnee.data.getPriorityString
 import com.dnod.tasksmanajinnee.ui.base.BaseViewModel
 import com.dnod.tasksmanajinnee.ui.getColor
 import com.dnod.tasksmanajinnee.ui.getString
@@ -19,11 +20,7 @@ class TaskItemViewModel : BaseViewModel() {
     fun bind(task: Task) {
         title.set(task.title)
         dueToLabel.set(getString(R.string.tasks_screen_label_due_to, task.getFormattedDueBy()))
-        priorityLabel.set(getString(when (task.priority) {
-            TaskPriority.NORMAL -> R.string.tasks_screen_label_medium
-            TaskPriority.HIGHT -> R.string.tasks_screen_label_high
-            TaskPriority.LOW -> R.string.tasks_screen_label_low
-        }))
+        priorityLabel.set(task.getPriorityString())
         priorityLabelTextColor.set(getColor(when (task.priority) {
             TaskPriority.NORMAL -> R.color.priority_normal_color
             TaskPriority.HIGHT -> R.color.priority_high_color

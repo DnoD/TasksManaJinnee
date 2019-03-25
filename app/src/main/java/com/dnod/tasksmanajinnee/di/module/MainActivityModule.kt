@@ -8,6 +8,8 @@ import com.dnod.tasksmanajinnee.ui.ScreenBuilderFactory
 import com.dnod.tasksmanajinnee.ui.auth.LoginFragment
 import com.dnod.tasksmanajinnee.ui.base.BaseFragment
 import com.dnod.tasksmanajinnee.ui.main.MainActivity
+import com.dnod.tasksmanajinnee.ui.task.TaskFragment
+import com.dnod.tasksmanajinnee.ui.taskdetails.TaskDetailsFragment
 import com.dnod.tasksmanajinnee.ui.tasks.TasksFragment
 import dagger.Module
 import dagger.Provides
@@ -23,6 +25,14 @@ abstract class MainActivityModule {
     @FragmentScoped
     @ContributesAndroidInjector
     internal abstract fun addTasksFragment(): TasksFragment
+
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun addTaskDetailsFragment(): TaskDetailsFragment
+
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun addTaskFragment(): TaskFragment
 
     @Module
     companion object {

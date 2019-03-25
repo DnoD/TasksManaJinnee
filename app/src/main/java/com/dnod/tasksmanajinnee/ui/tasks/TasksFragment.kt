@@ -21,6 +21,8 @@ import com.dnod.tasksmanajinnee.sorting.SortingProvider
 import com.dnod.tasksmanajinnee.ui.Conductor
 import com.dnod.tasksmanajinnee.ui.ScreenBuilderFactory
 import com.dnod.tasksmanajinnee.ui.base.BaseFragment
+import com.dnod.tasksmanajinnee.ui.task.TaskFragment
+import com.dnod.tasksmanajinnee.ui.taskdetails.TaskDetailsFragment
 
 import javax.inject.Inject
 
@@ -75,7 +77,7 @@ class TasksFragment : BaseFragment(), TasksAdapter.Listener {
                 }
             })
             nonOptionalViewModel.createTaskAction.observe(this@TasksFragment, Observer {
-                showMessage(R.string.message_under_construction)
+                conductor.goTo(screenBuilderFactory.create(TaskFragment.createInstance()))
             })
             setupSortPopup()
             setupChannelsList()
@@ -85,8 +87,11 @@ class TasksFragment : BaseFragment(), TasksAdapter.Listener {
     }
 
     override fun onItemClick(task: Task) {
-        showMessage(R.string.message_under_construction)
+        conductor.goTo(screenBuilderFactory.create(TaskDetailsFragment.createInstance(task.id ?: "")))
     }
+
+    override val rootView: View
+        get() = viewDataBinding.tasksRoot
 
     override fun getScreenTag(): String {
         return TAG
@@ -105,7 +110,7 @@ class TasksFragment : BaseFragment(), TasksAdapter.Listener {
 
     private fun setupSortPopup() {
         sortPopupWindow = ListPopupWindow(context)
-        sortPopupWindow.anchorView = viewDataBinding.btnSort
+        sortPopupWindow.anchorView = viewDataBinding.toolbar.rightIcon
         sortPopupWindow.setContentWidth(resources.getDimension(R.dimen.sort_popup_width).toInt())
 
         sortPopupAdapter = SortPopupAdapter(context, sortingProvider.getCurrentSortModel(), sortingProvider.getAvailableSortValues())

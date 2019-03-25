@@ -1,9 +1,12 @@
 package com.dnod.tasksmanajinnee.data.source.remote
 
 import com.dnod.tasksmanajinnee.data.SortModel
+import com.dnod.tasksmanajinnee.data.Task
 import com.dnod.tasksmanajinnee.data.source.remote.request.AuthRequest
 import com.dnod.tasksmanajinnee.data.source.remote.response.AuthResponse
+import com.dnod.tasksmanajinnee.data.source.remote.response.TaskResponse
 import com.dnod.tasksmanajinnee.data.source.remote.response.TasksResponse
+import com.dnod.tasksmanajinnee.utils.DateFormatUtil
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -101,6 +104,40 @@ class RetrofitClientApi @Inject constructor(
     override fun getTasks(page: Int, sortModel: SortModel): Observable<Response<TasksResponse>> {
         val sortQuery = createSortQuery(sortModel)
         return manaJinnee.getTasks(page, sortQuery)
+                .subscribeOn(Schedulers.io())
+                .map { response ->
+                    val body = response.body() ?: return@map response
+                    body.tasks.map { task -> task.dueBy = DateFormatUtil.getFixedTime(task.dueBy.toLong()).toString() }
+                    response
+                }
+    }
+
+    override fun getTask(taskId: String): Observable<Response<TaskResponse>> {
+        return manaJinnee.getTask(taskId)
+                .subscribeOn(Schedulers.io())
+                .map { response ->
+                    val body = response.body() ?: return@map response
+                    body.task.dueBy = DateFormatUtil.getFixedTime(body.task.dueBy.toLong()).toString()
+                    response
+                }
+    }
+
+    override fun deleteTask(task: Task): Observable<Response<Void>> {
+        return manaJinnee.deleteTask(task.id ?: "")
+                .subscribeOn(Schedulers.io())
+    }
+
+    override fun createTask(task: Task): Observable<Response<TaskResponse>> {
+        task.dueBy = DateFormatUtil.getFixedTime(task.dueBy.toLong(), true).toString()
+        return manaJinnee.createTask(task)
+                .subscribeOn(Schedulers.io())
+    }
+
+    override fun updateTask(task: Task): Observable<Response<TaskResponse>> {
+        val taskId = task.id ?: ""
+        task.dueBy = DateFormatUtil.getFixedTime(task.dueBy.toLong()).toString()
+        task.id = null
+        return manaJinnee.updateTask(taskId, task)
                 .subscribeOn(Schedulers.io())
     }
 
