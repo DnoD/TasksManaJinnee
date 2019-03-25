@@ -6,11 +6,11 @@ import com.google.gson.annotations.SerializedName
 
 data class Task(
     @SerializedName("id")
-    var id: String = "",
+    var id: String? = null,
     @SerializedName("title")
     var title: String = "",
     @SerializedName("description")
-    var description: String = "",
+    var description: String? = null,
     @SerializedName("dueBy")
     var dueBy: String = "",
     @SerializedName("priority")

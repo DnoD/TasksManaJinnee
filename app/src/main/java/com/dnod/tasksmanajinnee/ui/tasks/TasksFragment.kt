@@ -87,7 +87,7 @@ class TasksFragment : BaseFragment(), TasksAdapter.Listener {
     }
 
     override fun onItemClick(task: Task) {
-        conductor.goTo(screenBuilderFactory.create(TaskDetailsFragment.createInstance(task.id)))
+        conductor.goTo(screenBuilderFactory.create(TaskDetailsFragment.createInstance(task.id ?: "")))
     }
 
     override val rootView: View

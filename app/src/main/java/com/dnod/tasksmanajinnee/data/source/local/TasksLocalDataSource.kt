@@ -21,4 +21,7 @@ class TasksLocalDataSource @Inject constructor(
 
     override fun delete(task: Task, listener: TasksDataSource.TaskDeleteListener) {
     }
+
+    override fun create(task: Task, listener: TasksDataSource.TaskCreateListener) {
+    }
 }

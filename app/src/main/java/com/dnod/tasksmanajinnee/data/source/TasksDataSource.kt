@@ -24,6 +24,12 @@ interface TasksDataSource {
         fun onTaskDeleteFailure()
     }
 
+    interface TaskCreateListener {
+        fun onTaskCreated(task: Task)
+
+        fun onTaskCreateFailure()
+    }
+
     fun getTasks(listener: GetTasksListener)
 
     fun getTask(taskid: String, listener: GetTaskListener)
@@ -31,4 +37,6 @@ interface TasksDataSource {
     fun getNextPage(listener: GetTasksListener)
 
     fun delete(task: Task, listener: TaskDeleteListener)
+
+    fun create(task: Task, listener: TaskCreateListener)
 }

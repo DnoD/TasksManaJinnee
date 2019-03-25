@@ -1,5 +1,6 @@
 package com.dnod.tasksmanajinnee.data.source.remote
 
+import com.dnod.tasksmanajinnee.data.Task
 import com.dnod.tasksmanajinnee.data.source.remote.request.AuthRequest
 import com.dnod.tasksmanajinnee.data.source.remote.response.AuthResponse
 import com.dnod.tasksmanajinnee.data.source.remote.response.TaskResponse
@@ -28,4 +29,7 @@ interface ManaJinneeService {
 
     @DELETE("tasks/{id}")
     fun deleteTask(@Path("id") taskId: String): Observable<Response<Void>>
+
+    @POST("tasks")
+    fun createTask(@Body task: Task): Observable<Response<TaskResponse>>
 }

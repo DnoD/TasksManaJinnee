@@ -77,6 +77,21 @@ class TasksRemoteDataSource @Inject constructor(
                 })
     }
 
+    override fun create(task: Task, listener: TasksDataSource.TaskCreateListener) {
+        composite.add(clientApi.createTask(task)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response ->
+                    val body = response.body()
+                    if (response.errorBody() != null || body == null) {
+                        listener.onTaskCreateFailure()
+                        return@subscribe
+                    }
+                    listener.onTaskCreated(body.task)
+                }) {
+                    listener.onTaskCreateFailure()
+                })
+    }
+
     private fun handleTasksResponse(response: Response<TasksResponse>, listener: TasksDataSource.GetTasksListener) {
         if (response.errorBody() != null || response.body() == null) {
             listener.onReceiveTasksFailure()
