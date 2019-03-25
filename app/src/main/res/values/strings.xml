@@ -37,6 +37,16 @@
     <string name="task_details_screen_removal_dialog_ok">Proceed</string>
     <string name="task_details_screen_removal_dialog_cancel">Cancel</string>
 
+    <!-- Task Create Update Screen -->
+    <string name="task_create_update_screen_title_create">Create task</string>
+    <string name="task_create_update_screen_title_update">Update task</string>
+    <string name="task_create_update_screen_label_title">Title</string>
+    <string name="task_create_update_screen_label_due">Due to</string>
+    <string name="task_create_update_screen_message_create_succeed">Task has been created successfully</string>
+    <string name="task_create_update_screen_message_update_succeed">Task has been updated successfully</string>
+    <string name="task_create_update_screen_message_action_failure">Requested action failure</string>
+    <string name="task_create_update_screen_message_empty_fields">All values should not be empty</string>
+
     <string name="sort_value_none">None</string>
     <string name="sort_value_title">Title</string>
     <string name="sort_value_priority">Priority</string>

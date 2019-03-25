@@ -21,6 +21,7 @@ import com.dnod.tasksmanajinnee.sorting.SortingProvider
 import com.dnod.tasksmanajinnee.ui.Conductor
 import com.dnod.tasksmanajinnee.ui.ScreenBuilderFactory
 import com.dnod.tasksmanajinnee.ui.base.BaseFragment
+import com.dnod.tasksmanajinnee.ui.task.TaskFragment
 import com.dnod.tasksmanajinnee.ui.taskdetails.TaskDetailsFragment
 
 import javax.inject.Inject
@@ -76,7 +77,7 @@ class TasksFragment : BaseFragment(), TasksAdapter.Listener {
                 }
             })
             nonOptionalViewModel.createTaskAction.observe(this@TasksFragment, Observer {
-                showMessage(R.string.message_under_construction)
+                conductor.goTo(screenBuilderFactory.create(TaskFragment.createInstance()))
             })
             setupSortPopup()
             setupChannelsList()
