@@ -32,4 +32,7 @@ interface ManaJinneeService {
 
     @POST("tasks")
     fun createTask(@Body task: Task): Observable<Response<TaskResponse>>
+
+    @PUT("tasks/{id}")
+    fun updateTask(@Path("id") taskId: String, @Body task: Task): Observable<Response<TaskResponse>>
 }

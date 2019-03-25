@@ -133,6 +133,14 @@ class RetrofitClientApi @Inject constructor(
                 .subscribeOn(Schedulers.io())
     }
 
+    override fun updateTask(task: Task): Observable<Response<TaskResponse>> {
+        val taskId = task.id ?: ""
+        task.dueBy = DateFormatUtil.getFixedTime(task.dueBy.toLong()).toString()
+        task.id = null
+        return manaJinnee.updateTask(taskId, task)
+                .subscribeOn(Schedulers.io())
+    }
+
     override fun setSessionToken(token: String) {
         if (token.isNotEmpty()) {
             authorizationString = "Bearer $token"

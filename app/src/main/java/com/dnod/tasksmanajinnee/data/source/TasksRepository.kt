@@ -29,4 +29,8 @@ class TasksRepository @Inject constructor(
     override fun create(task: Task, listener: TasksDataSource.TaskCreateListener) {
         remoteDataSource.create(task, listener)
     }
+
+    override fun update(task: Task, listener: TasksDataSource.TaskUpdateListener) {
+        remoteDataSource.update(task, listener)
+    }
 }

@@ -30,6 +30,12 @@ interface TasksDataSource {
         fun onTaskCreateFailure()
     }
 
+    interface TaskUpdateListener {
+        fun onTaskUpdated(task: Task)
+
+        fun onTaskUpdateFailure()
+    }
+
     fun getTasks(listener: GetTasksListener)
 
     fun getTask(taskid: String, listener: GetTaskListener)
@@ -39,4 +45,6 @@ interface TasksDataSource {
     fun delete(task: Task, listener: TaskDeleteListener)
 
     fun create(task: Task, listener: TaskCreateListener)
+
+    fun update(task: Task, listener: TaskUpdateListener)
 }

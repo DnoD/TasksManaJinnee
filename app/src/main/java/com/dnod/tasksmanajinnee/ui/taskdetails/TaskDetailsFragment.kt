@@ -13,7 +13,9 @@ import com.dnod.tasksmanajinnee.data.Task
 import com.dnod.tasksmanajinnee.data.source.TasksDataSource
 import com.dnod.tasksmanajinnee.databinding.FragmentTaskDetailsBinding
 import com.dnod.tasksmanajinnee.ui.Conductor
+import com.dnod.tasksmanajinnee.ui.ScreenBuilderFactory
 import com.dnod.tasksmanajinnee.ui.base.BaseFragment
+import com.dnod.tasksmanajinnee.ui.task.TaskFragment
 
 import javax.inject.Inject
 
@@ -44,6 +46,9 @@ class TaskDetailsFragment : BaseFragment() {
     lateinit var conductor: Conductor<Conductor.ScreenBuilder<BaseFragment>>
 
     @Inject
+    lateinit var screenBuilderFactory: ScreenBuilderFactory<BaseFragment>
+
+    @Inject
     lateinit var tasksDataSource: TasksDataSource
 
     override fun onCreateView(
@@ -58,7 +63,7 @@ class TaskDetailsFragment : BaseFragment() {
                 conductor.goBack()
             })
             nonOptionalViewModel.editAction.observe(this@TaskDetailsFragment, Observer {
-                showMessage(R.string.message_under_construction)
+                conductor.goTo(screenBuilderFactory.create(TaskFragment.createInstance(arguments?.getString(PROVIDED_TASK_ID))))
             })
             nonOptionalViewModel.deleteAction.observe(this@TaskDetailsFragment, Observer { task ->
                 task?.let {
