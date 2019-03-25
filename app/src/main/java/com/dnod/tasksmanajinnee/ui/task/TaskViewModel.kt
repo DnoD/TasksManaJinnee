@@ -13,7 +13,7 @@ import com.dnod.tasksmanajinnee.ui.view.ToolBarViewModel
 import com.dnod.tasksmanajinnee.utils.DateFormatUtil
 import java.util.*
 
-class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSource.GetTaskListener {
+class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSource.GetTaskListener, TasksDataSource.TaskCreateListener {
 
     private lateinit var tasksDataSource: TasksDataSource
     private var task: Task? = null
@@ -64,22 +64,30 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
         taskDescription = s.toString()
     }
 
-    fun onPriorityHightChanged(view: View, checked: Boolean) {
+    fun onPriorityHighChanged(view: View, checked: Boolean) {
         if (checked) {
-            taskPriority = getString(R.string.tasks_screen_label_high)
+            taskPriority = TaskPriority.HIGHT.name
         }
     }
 
     fun onPriorityMediumChanged(view: View, checked: Boolean) {
         if (checked) {
-            taskPriority = getString(R.string.tasks_screen_label_medium)
+            taskPriority = TaskPriority.NORMAL.name
         }
     }
 
     fun onPriorityLowChanged(view: View, checked: Boolean) {
         if (checked) {
-            taskPriority = getString(R.string.tasks_screen_label_low)
+            taskPriority = TaskPriority.LOW.name
         }
+    }
+
+    override fun onTaskCreated(task: Task) {
+        saveSucceedEvent.call()
+    }
+
+    override fun onTaskCreateFailure() {
+        errorEvent.postValue(getString(R.string.task_create_update_screen_message_action_failure))
     }
 
     override fun onLeftAction() {
@@ -88,7 +96,7 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
 
     override fun onRightAction() {
         if (validateForm()) {
-            saveSucceedEvent.call()
+            tasksDataSource.create(Task(null, taskTitle, taskDescription, taskDueTo.toString(), TaskPriority.valueOf(taskPriority)), this)
         } else {
             errorEvent.postValue(getString(R.string.task_create_update_screen_message_empty_fields))
         }

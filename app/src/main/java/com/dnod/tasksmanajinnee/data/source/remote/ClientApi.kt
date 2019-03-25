@@ -21,4 +21,6 @@ interface ClientApi {
     fun setSessionToken(token: String)
 
     fun deleteTask(task: Task): Observable<Response<Void>>
+
+    fun createTask(task: Task): Observable<Response<TaskResponse>>
 }
