@@ -36,4 +36,9 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="TextLabel">
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@color/text_hint_color</item>
+    </style>
+
 </resources>
