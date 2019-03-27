@@ -46,6 +46,13 @@
     <string name="task_create_update_screen_message_update_succeed">Task has been updated successfully</string>
     <string name="task_create_update_screen_message_action_failure">Requested action failure</string>
     <string name="task_create_update_screen_message_empty_fields">All values should not be empty</string>
+    <string-array name="notification_options_labels">
+        <item>None</item>
+        <item>15 mins before</item>
+        <item>30 mins before</item>
+        <item>1 hour before</item>
+        <item>1 day before</item>
+    </string-array>
 
     <string name="sort_value_none">None</string>
     <string name="sort_value_title">Title</string>

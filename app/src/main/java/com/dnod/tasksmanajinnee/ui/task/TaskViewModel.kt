@@ -6,10 +6,8 @@ import android.view.View
 import com.dnod.tasksmanajinnee.R
 import com.dnod.tasksmanajinnee.data.*
 import com.dnod.tasksmanajinnee.data.source.TasksDataSource
-import com.dnod.tasksmanajinnee.ui.SingleEvent
+import com.dnod.tasksmanajinnee.ui.*
 import com.dnod.tasksmanajinnee.ui.base.BaseViewModel
-import com.dnod.tasksmanajinnee.ui.getColor
-import com.dnod.tasksmanajinnee.ui.getString
 import com.dnod.tasksmanajinnee.ui.view.ToolBarViewModel
 import com.dnod.tasksmanajinnee.utils.DateFormatUtil
 import java.util.*
@@ -23,7 +21,9 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
     private var taskPriority = ""
     private var taskDescription = ""
     private var taskDueTo = 0L
+    private var taskNotificationMinutes = 0
 
+    internal val pickNotificationAction = SingleEvent<Int>()
     internal val backAction = SingleEvent<Void>()
     internal val pickDueToAction = SingleEvent<Long>()
     internal val saveSucceedEvent = SingleEvent<Void>()
@@ -56,8 +56,16 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
         dueTo.set(DateFormatUtil.getTaskDue(calendar.time))
     }
 
+    fun setNotificationValue(minutes: Int) {
+        applyNotificationValue(minutes)
+    }
+
     fun pickDueTo() {
         pickDueToAction.postValue(taskDueTo)
+    }
+
+    fun pickNotification() {
+        pickNotificationAction.postValue(taskNotificationMinutes)
     }
 
     fun onTitleChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -175,5 +183,10 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
             }
         }
         return null
+    }
+
+    private fun applyNotificationValue(minutes: Int) {
+        taskNotificationMinutes = minutes
+        notification.set(getStringArray(R.array.notification_options_labels)[getIntArray(R.array.notification_options_values).indexOfFirst { value -> value == minutes }])
     }
 }
