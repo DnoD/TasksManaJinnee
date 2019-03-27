@@ -3,8 +3,11 @@ package com.dnod.tasksmanajinnee.ui.task
 import android.app.DatePickerDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.DialogInterface
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,6 +58,7 @@ class TaskFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private lateinit var viewDataBinding: FragmentTaskBinding
+    private var selectedNotificationValue: Int = 0
 
     @Inject
     lateinit var conductor: Conductor<Conductor.ScreenBuilder<BaseFragment>>
@@ -76,6 +80,11 @@ class TaskFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
             nonOptionalViewModel.pickDueToAction.observe(this@TaskFragment, Observer { dueTo ->
                 dueTo?.let {
                     showDueToPicker(it)
+                }
+            })
+            nonOptionalViewModel.pickNotificationAction.observe(this@TaskFragment, Observer { notificationValue ->
+                notificationValue?.let {
+                    showNotificationPickerDialog(it)
                 }
             })
             nonOptionalViewModel.start(arguments?.getString(PROVIDED_TASK_ID)
@@ -112,6 +121,22 @@ class TaskFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
 
     override fun getScreenTag(): String {
         return TAG
+    }
+
+    private fun showNotificationPickerDialog(minutes: Int) {
+        context?.let {
+            val values = resources.getIntArray(R.array.notification_options_values)
+            val selectedItem = values.indexOfFirst { value -> value == minutes }
+            val builder = AlertDialog.Builder(it, R.style.AppAlertDialogStyle)
+            builder.setSingleChoiceItems(R.array.notification_options_labels, selectedItem
+            ) { dialog, which ->
+                selectedNotificationValue = values[which]
+            }.setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
+                viewDataBinding.viewModel?.setNotificationValue(selectedNotificationValue)
+                dialogInterface.dismiss()
+            }
+            builder.show()
+        }
     }
 
     private fun showDueToPicker(dueto: Long) {

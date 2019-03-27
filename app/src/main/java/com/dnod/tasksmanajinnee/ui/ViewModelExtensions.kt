@@ -1,12 +1,21 @@
 package com.dnod.tasksmanajinnee.ui
 
 import android.graphics.drawable.Drawable
+import android.support.annotation.ArrayRes
 import android.support.annotation.ColorRes
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import android.support.v4.content.ContextCompat
 import com.dnod.tasksmanajinnee.ManaJinneeApplication
 import com.dnod.tasksmanajinnee.ui.base.BaseViewModel
+
+fun BaseViewModel.getStringArray(@ArrayRes arrayRes: Int): Array<String> {
+    return ManaJinneeApplication.instance.resources.getStringArray(arrayRes)
+}
+
+fun BaseViewModel.getIntArray(@ArrayRes arrayRes: Int): IntArray {
+    return ManaJinneeApplication.instance.resources.getIntArray(arrayRes)
+}
 
 fun BaseViewModel.getString(@StringRes stringRes: Int): String {
     return ManaJinneeApplication.instance.getString(stringRes)
