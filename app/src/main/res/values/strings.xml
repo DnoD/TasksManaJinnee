@@ -51,8 +51,10 @@
         <item>15 mins before</item>
         <item>30 mins before</item>
         <item>1 hour before</item>
-        <item>1 day before</item>
     </string-array>
+
+    <string name="reminder_notification_minutes_body_format">The event will start in %d minutes</string>
+    <string name="reminder_notification_hour_body">The event will start in 1 hour</string>
 
     <string name="sort_value_none">None</string>
     <string name="sort_value_title">Title</string>

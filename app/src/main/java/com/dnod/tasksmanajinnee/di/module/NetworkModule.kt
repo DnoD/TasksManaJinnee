@@ -33,7 +33,6 @@ abstract class NetworkModule {
 
         @JvmStatic
         @Provides
-        @Singleton
         internal fun provideGson(): Gson {
             return GsonBuilder()
                 .create()

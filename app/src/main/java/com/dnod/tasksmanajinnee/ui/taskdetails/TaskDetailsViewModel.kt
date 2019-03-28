@@ -4,15 +4,15 @@ import android.databinding.ObservableField
 import com.dnod.tasksmanajinnee.R
 import com.dnod.tasksmanajinnee.data.*
 import com.dnod.tasksmanajinnee.data.source.TasksDataSource
-import com.dnod.tasksmanajinnee.ui.SingleEvent
+import com.dnod.tasksmanajinnee.manager.ReminderManager
+import com.dnod.tasksmanajinnee.ui.*
 import com.dnod.tasksmanajinnee.ui.base.BaseViewModel
-import com.dnod.tasksmanajinnee.ui.getColor
-import com.dnod.tasksmanajinnee.ui.getString
 import com.dnod.tasksmanajinnee.ui.view.ToolBarViewModel
 
 class TaskDetailsViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSource.GetTaskListener, TasksDataSource.TaskDeleteListener {
 
     private lateinit var tasksDataSource: TasksDataSource
+    private lateinit var reminderManager: ReminderManager
     private var task: Task? = null
 
     internal val backAction = SingleEvent<Void>()
@@ -30,7 +30,9 @@ class TaskDetailsViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDa
 
     val toolbarViewModel = ObservableField<ToolBarViewModel>()
 
-    fun start(taskId: String, tasksDataSource: TasksDataSource) {
+
+    fun start(taskId: String, tasksDataSource: TasksDataSource, reminderManager: ReminderManager) {
+        this.reminderManager = reminderManager
         this.tasksDataSource = tasksDataSource
         toolbarViewModel.set(ToolBarViewModel(R.string.task_details_screen_title, R.drawable.ic_black, R.drawable.ic_edit, this))
         tasksDataSource.getTask(taskId, this)
@@ -65,6 +67,10 @@ class TaskDetailsViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDa
             TaskPriority.LOW -> R.color.priority_low_color
         }))
         description.set(task.description)
+        task.id?.let {
+            val reminderValue = reminderManager.getTaskReminderValue(it)
+            notification.set(getStringArray(R.array.notification_options_labels)[getIntArray(R.array.notification_options_values).indexOfFirst { value -> value == reminderValue }])
+        }
     }
 
     override fun onTaskNotFound() {

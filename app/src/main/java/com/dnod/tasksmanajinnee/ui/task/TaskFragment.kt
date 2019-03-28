@@ -15,6 +15,7 @@ import android.widget.DatePicker
 import com.dnod.tasksmanajinnee.R
 import com.dnod.tasksmanajinnee.data.source.TasksDataSource
 import com.dnod.tasksmanajinnee.databinding.FragmentTaskBinding
+import com.dnod.tasksmanajinnee.manager.ReminderManager
 import com.dnod.tasksmanajinnee.ui.Conductor
 import com.dnod.tasksmanajinnee.ui.base.BaseFragment
 import java.util.*
@@ -66,6 +67,9 @@ class TaskFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
     @Inject
     lateinit var tasksDataSource: TasksDataSource
 
+    @Inject
+    lateinit var reminderManager: ReminderManager
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -88,7 +92,7 @@ class TaskFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
                 }
             })
             nonOptionalViewModel.start(arguments?.getString(PROVIDED_TASK_ID)
-                    ?: "", tasksDataSource)
+                    ?: "", tasksDataSource, reminderManager)
         }
         return viewDataBinding.root
     }
