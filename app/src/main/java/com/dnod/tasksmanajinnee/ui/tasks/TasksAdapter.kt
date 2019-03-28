@@ -39,10 +39,6 @@ class TasksAdapter(
         return data.size
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return data[position].id.hashCode()
-    }
-
     override fun onBindViewHolder(holder: TaskHolder, position: Int) {
         holder.bind(data.get(position))
     }

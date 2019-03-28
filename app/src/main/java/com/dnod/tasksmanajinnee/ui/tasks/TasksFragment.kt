@@ -21,6 +21,7 @@ import com.dnod.tasksmanajinnee.sorting.SortingProvider
 import com.dnod.tasksmanajinnee.ui.Conductor
 import com.dnod.tasksmanajinnee.ui.ScreenBuilderFactory
 import com.dnod.tasksmanajinnee.ui.base.BaseFragment
+import com.dnod.tasksmanajinnee.ui.reminder.RemindersFragment
 import com.dnod.tasksmanajinnee.ui.task.TaskFragment
 import com.dnod.tasksmanajinnee.ui.taskdetails.TaskDetailsFragment
 
@@ -67,7 +68,7 @@ class TasksFragment : BaseFragment(), TasksAdapter.Listener {
             viewModel = ViewModelProviders.of(this@TasksFragment).get(TasksViewModel::class.java)
             val nonOptionalViewModel = viewModel?.let { it } ?: return@apply
             nonOptionalViewModel.alertAction.observe(this@TasksFragment, Observer {
-                showMessage(R.string.message_under_construction)
+                conductor.goTo(screenBuilderFactory.create(RemindersFragment.createInstance()))
             })
             nonOptionalViewModel.sortAction.observe(this@TasksFragment, Observer {
                 if (sortPopupWindow.isShowing) {

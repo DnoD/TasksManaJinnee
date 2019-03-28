@@ -3,8 +3,11 @@ package com.dnod.tasksmanajinnee.ui.task
 import android.app.DatePickerDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.DialogInterface
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +15,7 @@ import android.widget.DatePicker
 import com.dnod.tasksmanajinnee.R
 import com.dnod.tasksmanajinnee.data.source.TasksDataSource
 import com.dnod.tasksmanajinnee.databinding.FragmentTaskBinding
+import com.dnod.tasksmanajinnee.manager.ReminderManager
 import com.dnod.tasksmanajinnee.ui.Conductor
 import com.dnod.tasksmanajinnee.ui.base.BaseFragment
 import java.util.*
@@ -55,12 +59,16 @@ class TaskFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private lateinit var viewDataBinding: FragmentTaskBinding
+    private var selectedNotificationValue: Int = 0
 
     @Inject
     lateinit var conductor: Conductor<Conductor.ScreenBuilder<BaseFragment>>
 
     @Inject
     lateinit var tasksDataSource: TasksDataSource
+
+    @Inject
+    lateinit var reminderManager: ReminderManager
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -78,8 +86,13 @@ class TaskFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
                     showDueToPicker(it)
                 }
             })
+            nonOptionalViewModel.pickNotificationAction.observe(this@TaskFragment, Observer { notificationValue ->
+                notificationValue?.let {
+                    showNotificationPickerDialog(it)
+                }
+            })
             nonOptionalViewModel.start(arguments?.getString(PROVIDED_TASK_ID)
-                    ?: "", tasksDataSource)
+                    ?: "", tasksDataSource, reminderManager)
         }
         return viewDataBinding.root
     }
@@ -112,6 +125,22 @@ class TaskFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
 
     override fun getScreenTag(): String {
         return TAG
+    }
+
+    private fun showNotificationPickerDialog(minutes: Int) {
+        context?.let {
+            val values = resources.getIntArray(R.array.notification_options_values)
+            val selectedItem = values.indexOfFirst { value -> value == minutes }
+            val builder = AlertDialog.Builder(it, R.style.AppAlertDialogStyle)
+            builder.setSingleChoiceItems(R.array.notification_options_labels, selectedItem
+            ) { dialog, which ->
+                selectedNotificationValue = values[which]
+            }.setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
+                viewDataBinding.viewModel?.setNotificationValue(selectedNotificationValue)
+                dialogInterface.dismiss()
+            }
+            builder.show()
+        }
     }
 
     private fun showDueToPicker(dueto: Long) {

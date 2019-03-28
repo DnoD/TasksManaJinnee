@@ -6,10 +6,9 @@ import android.view.View
 import com.dnod.tasksmanajinnee.R
 import com.dnod.tasksmanajinnee.data.*
 import com.dnod.tasksmanajinnee.data.source.TasksDataSource
-import com.dnod.tasksmanajinnee.ui.SingleEvent
+import com.dnod.tasksmanajinnee.manager.ReminderManager
+import com.dnod.tasksmanajinnee.ui.*
 import com.dnod.tasksmanajinnee.ui.base.BaseViewModel
-import com.dnod.tasksmanajinnee.ui.getColor
-import com.dnod.tasksmanajinnee.ui.getString
 import com.dnod.tasksmanajinnee.ui.view.ToolBarViewModel
 import com.dnod.tasksmanajinnee.utils.DateFormatUtil
 import java.util.*
@@ -17,13 +16,16 @@ import java.util.*
 class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSource.GetTaskListener, TasksDataSource.TaskCreateListener, TasksDataSource.TaskUpdateListener {
 
     private lateinit var tasksDataSource: TasksDataSource
+    private lateinit var reminderManager: ReminderManager
     private var task: Task? = null
     private var isCreationWork = false
     private var taskTitle = ""
     private var taskPriority = ""
     private var taskDescription = ""
     private var taskDueTo = 0L
+    private var taskNotificationMinutes = 0
 
+    internal val pickNotificationAction = SingleEvent<Int>()
     internal val backAction = SingleEvent<Void>()
     internal val pickDueToAction = SingleEvent<Long>()
     internal val saveSucceedEvent = SingleEvent<Void>()
@@ -41,7 +43,9 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
 
     val toolbarViewModel = ObservableField<ToolBarViewModel>()
 
-    fun start(taskId: String, tasksDataSource: TasksDataSource) {
+
+    fun start(taskId: String, tasksDataSource: TasksDataSource, reminderManager: ReminderManager) {
+        this.reminderManager = reminderManager
         this.tasksDataSource = tasksDataSource
         toolbarViewModel.set(ToolBarViewModel(if (taskId.isEmpty()) R.string.task_create_update_screen_title_create else R.string.task_create_update_screen_title_update,
                 R.drawable.ic_black, R.drawable.ic_check, this))
@@ -56,8 +60,16 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
         dueTo.set(DateFormatUtil.getTaskDue(calendar.time))
     }
 
+    fun setNotificationValue(minutes: Int) {
+        applyNotificationValue(minutes)
+    }
+
     fun pickDueTo() {
         pickDueToAction.postValue(taskDueTo)
+    }
+
+    fun pickNotification() {
+        pickNotificationAction.postValue(taskNotificationMinutes)
     }
 
     fun onTitleChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -87,6 +99,7 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
     }
 
     override fun onTaskCreated(task: Task) {
+        applyNotification(task)
         saveSucceedEvent.call()
     }
 
@@ -95,6 +108,7 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
     }
 
     override fun onTaskUpdated(task: Task) {
+        applyNotification(task)
         saveSucceedEvent.call()
     }
 
@@ -115,6 +129,7 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
                     tasksDataSource.update(it, this)
                     return
                 }
+                applyNotification(task)
                 saveSucceedEvent.call()
             }
         } else {
@@ -136,6 +151,9 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
             TaskPriority.LOW -> R.color.priority_low_color
         }))
         description.set(task.description)
+        task.id?.let {
+            applyNotificationValue(reminderManager.getTaskReminderValue(it))
+        }
     }
 
     override fun onTaskNotFound() {
@@ -144,6 +162,15 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
 
     override fun onReceiveTaskFailure() {
         errorEvent.postValue(getString(R.string.common_error_messages_unexpected_server_response))
+    }
+
+    private fun applyNotification(task: Task?) {
+        task?.let {
+            val oldValue = reminderManager.getTaskReminderValue(it.id ?: "")
+            if (wasDueChanged(it) || oldValue != taskNotificationMinutes) {
+                reminderManager.applyTaskReminderValue(it, taskNotificationMinutes)
+            }
+        }
     }
 
     private fun validateForm(): Boolean {
@@ -161,7 +188,7 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
         task?.let {
             val titleChanged = it.title != taskTitle
             val priorityChanged = taskPriority.isNotEmpty() && it.priority != TaskPriority.valueOf(taskPriority)
-            val dueChanged = taskDueTo != 0L && it.dueBy != taskDueTo.toString()
+            val dueChanged = wasDueChanged(it)
             val descriptionChanged = it.description != taskDescription
             if (titleChanged ||
                     priorityChanged ||
@@ -175,5 +202,14 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
             }
         }
         return null
+    }
+
+    private fun wasDueChanged(task: Task): Boolean {
+        return taskDueTo != 0L && task.dueBy != taskDueTo.toString()
+    }
+
+    private fun applyNotificationValue(minutes: Int) {
+        taskNotificationMinutes = minutes
+        notification.set(getStringArray(R.array.notification_options_labels)[getIntArray(R.array.notification_options_values).indexOfFirst { value -> value == minutes }])
     }
 }
