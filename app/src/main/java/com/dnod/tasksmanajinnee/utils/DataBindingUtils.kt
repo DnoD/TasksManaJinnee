@@ -3,6 +3,7 @@ package com.dnod.tasksmanajinnee.utils
 import android.databinding.BindingAdapter
 import android.support.v7.widget.RecyclerView
 import com.dnod.tasksmanajinnee.data.Task
+import com.dnod.tasksmanajinnee.ui.reminder.RemindersAdapter
 import com.dnod.tasksmanajinnee.ui.tasks.TasksAdapter
 import com.dnod.tasksmanajinnee.ui.view.PaginateRecycleView
 import com.paginate.Paginate
@@ -13,6 +14,9 @@ fun <T> setRecyclerViewProperties(recyclerView: RecyclerView, items: List<*>?) {
         var adapter = recyclerView.adapter
         if (adapter is TasksAdapter) {
             adapter.swapData(items as List<Task>)
+        }
+        if (adapter is RemindersAdapter) {
+            adapter.swapData(items as List<Pair<Task, Int>>)
         }
     }
 }
