@@ -53,7 +53,16 @@
         <item>1 hour before</item>
     </string-array>
 
-    <string name="reminder_notification_minutes_body_format">The event will start in %d minutes</string>
+
+    <!-- Reminders Screen -->
+    <string name="reminders_screen_title">Reminders</string>
+    <string name="reminders_screen_message_reminder_removed">Reminder removed</string>
+    <string name="reminders_screen_label_minutes_format">%d mins before start</string>
+    <string name="reminders_screen_label_hour">1 hour before start</string>
+    <string name="reminders_screen_removal_dialog_title">Delete reminder</string>
+    <string name="reminders_screen_removal_dialog_mesage">The reminder will be removed permanently</string>
+
+    <string name="reminder_notification_minutes_body_format">The event will start in %s minutes</string>
     <string name="reminder_notification_hour_body">The event will start in 1 hour</string>
 
     <string name="sort_value_none">None</string>

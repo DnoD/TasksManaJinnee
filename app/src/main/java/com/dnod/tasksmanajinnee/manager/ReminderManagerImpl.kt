@@ -64,8 +64,8 @@ class ReminderManagerImpl @Inject constructor(
         saveReminders()
     }
 
-    override fun getReminders(): List<Task> {
-        return reminders.map { reminder -> Task(reminder.taskId, reminder.taskTitle, null, reminder.taskDueTo.toString(), TaskPriority.LOW) }
+    override fun getReminders(): List<Pair<Task, Int>> {
+        return reminders.map { reminder -> Pair(Task(reminder.taskId, reminder.taskTitle, null, reminder.taskDueTo.toString(), TaskPriority.LOW), reminder.remindValue) }
     }
 
     override fun handleJob(params: JobParameters?) {

@@ -10,5 +10,5 @@ interface ReminderManager {
 
     fun removeTaskReminderValue(task: Task)
 
-    fun getReminders(): List<Task>
+    fun getReminders(): List<Pair<Task, Int>>
 }
