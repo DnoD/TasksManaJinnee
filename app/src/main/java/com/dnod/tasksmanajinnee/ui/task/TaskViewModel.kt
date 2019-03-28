@@ -126,7 +126,6 @@ class TaskViewModel : BaseViewModel(), ToolBarViewModel.Listener, TasksDataSourc
                 tasksDataSource.create(Task(null, taskTitle, taskDescription, taskDueTo.toString(), TaskPriority.valueOf(taskPriority)), this)
             } else {
                 prepareUpdatedTask()?.let {
-                    applyNotification(it)
                     tasksDataSource.update(it, this)
                     return
                 }
